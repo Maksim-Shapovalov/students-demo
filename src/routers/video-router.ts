@@ -48,7 +48,7 @@ VideoRouter.post('/',
             }
         )
     }
-    if (!newVideo.author){
+    if (!newVideo.author || newVideo.author.length > 20){
         errorsMessages.push({
                 message: 'Incorrect author',
                 field: 'author'
@@ -122,6 +122,12 @@ VideoRouter.put('/:id',
             errorsMessages.push({
                 'message': 'Incorrect minAgeRestriction',
                 'field': 'minAgeRestriction'
+            })
+        }
+        if(!req.body.publicationDate || typeof req.body.publicationDate !== "string" || !req.body.publicationDate.trim()){
+            errorsMessages.push({
+                'message': 'Incorrect publicationDate',
+                'field': 'publicationDate'
             })
         }
     if (errorsMessages.length){
