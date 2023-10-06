@@ -12,7 +12,7 @@ export const VideoRouter = Router();
 
 
 VideoRouter.get('/', (req: Request, res: Response) => {
-    res.status(HTTP_STATUS.OK_200).send(db)
+    res.status(HTTP_STATUS.OK_200).send(db.videos)
 })
 VideoRouter.get('/:id', (req: Request, res: Response) => {
     let video = db.videos.find(v => v.id === +req.params.id);

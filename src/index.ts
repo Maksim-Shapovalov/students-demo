@@ -20,11 +20,11 @@ const parserMiddleware = bodyParser()
 app.use(parserMiddleware)
 
 app.use('/videos',VideoRouter)
-app.use('/testing/all-data',AllDataClear)
+app.use("/testing/all-data",AllDataClear)
 
 
 
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+app.listen(3000, () => {
+    console.log(`Example app listening on port ${3000}`)
 })
