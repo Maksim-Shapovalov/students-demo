@@ -15,7 +15,7 @@ export type VideoType = {
     title: string
     author: string
     canBeDownloaded: boolean
-    minAgeRestriction: null
+    minAgeRestriction: any
     createdAt: string
     publicationDate: string
     availableResolutions: Array<string>
