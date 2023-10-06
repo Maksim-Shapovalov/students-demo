@@ -66,9 +66,11 @@ VideoRouter.post('/',
     }
     if (errorsMessages.length){
         return res.status(HTTP_STATUS.BAD_REQUEST_400).send({errorsMessages})
+    }else {
+        db.videos.push(newVideo);
+        res.status(HTTP_STATUS.CREATED_201).send(newVideo)
     }
-    db.videos.push(newVideo);
-    res.status(HTTP_STATUS.CREATED_201).send(newVideo)
+
 })
 
 VideoRouter.put('/:id',
