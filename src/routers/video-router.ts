@@ -31,7 +31,7 @@ VideoRouter.post('/', (req: Request, res: Response) => {
         canBeDownloaded: false,
         minAgeRestriction: null,
         createdAt: new Date().toISOString(),
-        publicationDate: new Date((nextDay.setDate(nextDay.getDate() + 1))).toISOString(),
+        publicationDate: nextDay.setDate(nextDay.getDate()+1).toString(),
         availableResolutions: req.body.availableResolutions
     }
     console.log(newVideo)
