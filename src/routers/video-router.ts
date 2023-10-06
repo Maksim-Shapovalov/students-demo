@@ -111,7 +111,7 @@ VideoRouter.put('/:id', (req: Request, res: Response) => {
             )
         }
     }
-    if (!req.body.canBeDownloaded || typeof video.canBeDownloaded !== 'boolean' ){
+    if (!req.body.canBeDownloaded || typeof req.body.canBeDownloaded !== 'boolean' ){
         errorsMessages.push({
                 'message': 'Incorrect availableResolutions',
                 'field': 'availableResolutions'
