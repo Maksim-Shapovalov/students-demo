@@ -3,6 +3,7 @@ import {db} from "../db-items/db-videos";
 import {HTTP_STATUS} from "../index";
 import {availableResolutionsEnum, VideoType} from "../types/video-type";
 import {ValidationErrorType} from "../validation/Error-validation";
+import {ValidationBlog} from "../validation/video-validation";
 
 
 
@@ -22,7 +23,9 @@ VideoRouter.get('/:id', (req: Request, res: Response) => {
 })
 
 const nextDay = new Date()
-VideoRouter.post('/', (req: Request, res: Response) => {
+VideoRouter.post('/',
+    ValidationBlog,
+    (req: Request, res: Response) => {
     const {availableResolutions} = req.body
     const newVideo: VideoType = {
         id: +(new Date()),
@@ -31,7 +34,7 @@ VideoRouter.post('/', (req: Request, res: Response) => {
         canBeDownloaded: false,
         minAgeRestriction: null,
         createdAt: new Date().toISOString(),
-        publicationDate: new Date(nextDay.setDate(nextDay.getDate()+1)).toISOString(),
+        publicationDate: new Date((nextDay.setDate(nextDay.getDate() + 1))).toISOString(),
         availableResolutions: req.body.availableResolutions
     }
     console.log(newVideo)
@@ -73,7 +76,9 @@ VideoRouter.post('/', (req: Request, res: Response) => {
     res.status(HTTP_STATUS.CREATED_201).send(newVideo)
 })
 
-VideoRouter.put('/:id', (req: Request, res: Response) => {
+VideoRouter.put('/:id',
+    ValidationBlog,
+    (req: Request, res: Response) => {
     let video  = db.videos.find(v => v.id === +req.params.id);
     console.log(video, 'update')
     if(!video) return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
