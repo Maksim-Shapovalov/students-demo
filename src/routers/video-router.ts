@@ -78,38 +78,40 @@ VideoRouter.put('/:id', (req: Request, res: Response) => {
     console.log(video, 'update')
     if(!video) return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
     const {availableResolutions} = req.body
+
     const errorsMessages: ValidationErrorType[] = []
+
     if (!req.body.title){
         errorsMessages.push({
-                message: 'Incorrect title',
-                field: 'title'
+                'message': 'Incorrect title',
+                'field': 'title'
             }
         )
     }
     if (!req.body.author){
         errorsMessages.push({
-                message: 'Incorrect author',
-                field: 'author'
+                'message': 'Incorrect author',
+                'field': 'author'
             }
         )
     }
     if (!req.body.availableResolutions ){
         errorsMessages.push({
-                message: 'Incorrect availableResolutions',
-                field: 'availableResolutions'
+                'message': 'Incorrect availableResolutions',
+                'field': 'availableResolutions'
             }
         )
     }
     for (const resolution of availableResolutions){
         if (!Object.values(availableResolutionsEnum).includes(resolution)){
             errorsMessages.push({
-                    message: 'Incorrect availableResolutions',
-                    field: 'availableResolutions'
+                'message': 'Incorrect availableResolutions',
+                'field': 'availableResolutions'
                 }
             )
         }
     }
-    if (errorsMessages.length !== 0){
+    if (errorsMessages.length){
         return res.status(HTTP_STATUS.BAD_REQUEST_400).send({errorsMessages})
     }else {
         video.title = req.body.title;
