@@ -19,8 +19,8 @@ export const HTTP_STATUS = {
 const parserMiddleware = bodyParser()
 app.use(parserMiddleware)
 
-app.use('/hometask_01/api/videos',VideoRouter)
-app.use('/hometask_01/api/testing/all-data',AllDataClear)
+app.use('/videos',VideoRouter)
+app.use('/testing/all-data',AllDataClear)
 
 
 
