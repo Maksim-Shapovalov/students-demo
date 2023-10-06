@@ -90,7 +90,7 @@ VideoRouter.put('/:id',
             }
         )
     }
-    if (!req.body.author){
+    if (!req.body.author || req.body.author.length > 20){
         errorsMessages.push({
                 'message': 'Incorrect author',
                 'field': 'author'
