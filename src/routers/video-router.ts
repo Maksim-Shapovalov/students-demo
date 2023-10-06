@@ -22,10 +22,11 @@ VideoRouter.get('/:id', (req: Request, res: Response) => {
     res.status(HTTP_STATUS.OK_200).send(video)
 })
 
-const nextDay = new Date()
+
 VideoRouter.post('/',
     ValidationVideo(),
     (req: Request, res: Response) => {
+    const nextDay = new Date()
     const {availableResolutions} = req.body
     const newVideo: VideoType = {
         id: +(new Date()),
@@ -34,8 +35,9 @@ VideoRouter.post('/',
         canBeDownloaded: false,
         minAgeRestriction: null,
         createdAt: new Date().toISOString(),
-        publicationDate: new Date((nextDay.setDate(nextDay.getDate() + 1))).toISOString(),
+        publicationDate: new Date((new Date().setDate(new Date().getDate() + 1))).toISOString(),
         availableResolutions: req.body.availableResolutions
+        //new Date((nextDay.setDate(nextDay.getDate() + 1))).toISOString()
     }
     console.log(newVideo)
     const errorsMessages: ValidationErrorType[] = []
@@ -53,15 +55,8 @@ VideoRouter.post('/',
             }
         )
     }
-    if (!newVideo.availableResolutions ){
-        errorsMessages.push({
-                message: 'Incorrect availableResolutions',
-                field: 'availableResolutions'
-            }
-        )
-    }
     for (const resolution of availableResolutions){
-        if (!Object.values(availableResolutionsEnum).includes(resolution)){
+        if (!Object.values(availableResolutionsEnum).includes(resolution) || !newVideo.availableResolutions){
             errorsMessages.push({
                     message: 'Incorrect availableResolutions',
                     field: 'availableResolutions'
@@ -118,8 +113,8 @@ VideoRouter.put('/:id',
     }
     if (!req.body.canBeDownloaded || typeof req.body.canBeDownloaded !== 'boolean' ){
         errorsMessages.push({
-                'message': 'Incorrect availableResolutions',
-                'field': 'availableResolutions'
+                'message': 'Incorrect canBeDownloaded',
+                'field': 'canBeDownloaded'
             }
         )
     }
