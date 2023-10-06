@@ -66,7 +66,7 @@ VideoRouter.post('/', (req: Request, res: Response) => {
             )
         }
     }
-    if (errorsMessages.length !== 0){
+    if (errorsMessages.length){
         return res.status(HTTP_STATUS.BAD_REQUEST_400).send({errorsMessages})
     }
     db.videos.push(newVideo);
@@ -120,7 +120,7 @@ VideoRouter.put('/:id', (req: Request, res: Response) => {
         video.canBeDownloaded = req.body.canBeDownloaded;
         video.minAgeRestriction = req.body.minAgeRestriction;
         video.publicationDate = req.body.publicationDate
-        res.status(HTTP_STATUS.CREATED_201).send(video)
+        res.status(HTTP_STATUS.NO_CONTENT_204).send(video)
     }
 
 
