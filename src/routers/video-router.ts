@@ -86,7 +86,7 @@ VideoRouter.put('/:id',
 
     const errorsMessages: ValidationErrorType[] = []
 
-    if (!req.body.title){
+    if (!req.body.title || req.body.title.length > 40){
         errorsMessages.push({
                 'message': 'Incorrect title',
                 'field': 'title'
