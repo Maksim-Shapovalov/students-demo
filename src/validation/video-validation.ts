@@ -1,7 +1,7 @@
 import {body} from "express-validator";
 
 
-export const ValidationBlog = () => (
+export const ValidationVideo = () => (
     [
         body('title')
             .trim()

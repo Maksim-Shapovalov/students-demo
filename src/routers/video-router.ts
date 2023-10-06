@@ -3,7 +3,7 @@ import {db} from "../db-items/db-videos";
 import {HTTP_STATUS} from "../index";
 import {availableResolutionsEnum, VideoType} from "../types/video-type";
 import {ValidationErrorType} from "../validation/Error-validation";
-import {ValidationBlog} from "../validation/video-validation";
+import {ValidationVideo} from "../validation/video-validation";
 
 
 
@@ -24,7 +24,7 @@ VideoRouter.get('/:id', (req: Request, res: Response) => {
 
 const nextDay = new Date()
 VideoRouter.post('/',
-    ValidationBlog,
+    ValidationVideo(),
     (req: Request, res: Response) => {
     const {availableResolutions} = req.body
     const newVideo: VideoType = {
@@ -77,7 +77,7 @@ VideoRouter.post('/',
 })
 
 VideoRouter.put('/:id',
-    ValidationBlog,
+    ValidationVideo(),
     (req: Request, res: Response) => {
     let video  = db.videos.find(v => v.id === +req.params.id);
     console.log(video, 'update')
