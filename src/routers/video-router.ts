@@ -74,7 +74,7 @@ VideoRouter.post('/', (req: Request, res: Response) => {
 })
 
 VideoRouter.put('/:id', (req: Request, res: Response) => {
-    let video = db.videos.find(v => v.id === +req.params.id);
+    let video  = db.videos.find(v => v.id === +req.params.id);
     console.log(video, 'update')
     if(!video) return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
     const {availableResolutions} = req.body
@@ -110,6 +110,13 @@ VideoRouter.put('/:id', (req: Request, res: Response) => {
                 }
             )
         }
+    }
+    if (!req.body.canBeDownloaded || typeof video.canBeDownloaded !== 'boolean' ){
+        errorsMessages.push({
+                'message': 'Incorrect availableResolutions',
+                'field': 'availableResolutions'
+            }
+        )
     }
     if (errorsMessages.length){
         return res.status(HTTP_STATUS.BAD_REQUEST_400).send({errorsMessages})
