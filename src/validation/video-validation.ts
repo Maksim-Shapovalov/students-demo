@@ -16,7 +16,8 @@ export const ValidationVideo = () => (
         body('availableResolutions')
             .trim()
             .isString()
-            .isLength({min:1,max:100})
+            .isLength({min:1,max:100}),
+        body('minAgeRestriction').trim().isString()
 
     ]
 )

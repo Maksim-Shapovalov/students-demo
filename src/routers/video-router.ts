@@ -41,7 +41,7 @@ VideoRouter.post('/',
     }
     console.log(newVideo)
     const errorsMessages: ValidationErrorType[] = []
-    if (!newVideo.title){
+    if (!newVideo.title || newVideo.title.length > 40){
         errorsMessages.push({
             message: 'Incorrect title',
             field: 'title'
@@ -118,6 +118,12 @@ VideoRouter.put('/:id',
             }
         )
     }
+    if(!req.body.minAgeRestriction || typeof req.body.minAgeRestriction !== 'number' || 1 > req.body.minAgeRestriction  || req.body.minAgeRestriction > 18 ){
+            errorsMessages.push({
+                'message': 'Incorrect minAgeRestriction',
+                'field': 'minAgeRestriction'
+            })
+        }
     if (errorsMessages.length){
         return res.status(HTTP_STATUS.BAD_REQUEST_400).send({errorsMessages})
     }else {
