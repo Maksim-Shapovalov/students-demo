@@ -8,6 +8,7 @@ export const authGuardMiddleware = (req: Request, res: Response, next: NextFunct
 
     if (!authHeader || !authHeader.startsWith('Basic')){
         res.sendStatus(HTTP_STATUS.UNAUTHORIZED_401)
+        return
     }
 
     const splitHeader =authHeader!.split(' ')[1]
