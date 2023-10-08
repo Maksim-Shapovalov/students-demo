@@ -19,9 +19,7 @@ export const HTTP_STATUS = {
 }
 
 
-const parserMiddleware = bodyParser()
-app.use(parserMiddleware)
-
+app.use(express.json());
 app.use("/videos", VideoRouter)
 app.use("/testing/all-data", AllDataClear)
 app.use("/blogs", blogsRouter)
