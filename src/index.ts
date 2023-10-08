@@ -3,6 +3,7 @@ import bodyParser from 'body-parser'
 import {VideoRouter} from "./routers/video-router";
 import {AllDataClear} from "./routers/all-data-clear";
 import {blogsRouter} from "./routers/blogs-router";
+import {postsRouter} from "./routers/posts-router";
 
 
 export const app = express()
@@ -24,7 +25,7 @@ app.use(parserMiddleware)
 app.use("/videos", VideoRouter)
 app.use("/testing/all-data", AllDataClear)
 app.use("/blogs", blogsRouter)
-
+app.use("/posts", postsRouter)
 
 
 app.listen(port, () => {
