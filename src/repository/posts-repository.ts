@@ -40,10 +40,10 @@ export const postsRepository = {
         const findPosts = dbBlogsPosts.posts.findIndex(b=>b.id === id)
         if (findPosts === -1){
             return false
-        }else{
-            dbBlogsPosts.posts.splice(findPosts,1)
-            return true
         }
+        dbBlogsPosts.posts.splice(findPosts,1)
+        return true
+
     }
 
 }
