@@ -11,7 +11,7 @@ export const postsRouter = Router()
 postsRouter.get('/', (req:Request, res: Response) =>{
     res.send(postsRepository.getAllPosts())
 })
-postsRouter.get('/id', (req:Request, res: Response) =>{
+postsRouter.get('/:id', (req:Request, res: Response) =>{
     let post = postsRepository.getPostsById(req.params.id)
     if (post){
         res.status(200).send(post)
