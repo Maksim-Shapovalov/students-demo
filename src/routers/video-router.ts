@@ -1,5 +1,5 @@
 import {Request, Response, Router} from "express";
-import {db} from "../db-items/db-videos";
+import {dbVideos} from "../db-items/db-videos";
 import {HTTP_STATUS} from "../index";
 import {availableResolutionsEnum, VideoType} from "../types/video-type";
 import {ValidationErrorType} from "../validation/Error-validation";
@@ -13,10 +13,10 @@ export const VideoRouter = Router();
 
 
 VideoRouter.get('/', (req: Request, res: Response) => {
-    res.status(HTTP_STATUS.OK_200).send(db.videos)
+    res.status(HTTP_STATUS.OK_200).send(dbVideos.videos)
 })
 VideoRouter.get('/:id', (req: Request, res: Response) => {
-    let video = db.videos.find(v => v.id === +req.params.id);
+    let video = dbVideos.videos.find(v => v.id === +req.params.id);
     console.log(video, 'get by id')
     if(!video) return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
     res.status(HTTP_STATUS.OK_200).send(video)
@@ -67,7 +67,7 @@ VideoRouter.post('/',
     if (errorsMessages.length){
         return res.status(HTTP_STATUS.BAD_REQUEST_400).send({errorsMessages})
     }else {
-        db.videos.push(newVideo);
+        dbVideos.videos.push(newVideo);
         res.status(HTTP_STATUS.CREATED_201).send(newVideo)
     }
 
@@ -76,7 +76,7 @@ VideoRouter.post('/',
 VideoRouter.put('/:id',
     ValidationVideo(),
     (req: Request, res: Response) => {
-    let video  = db.videos.find(v => v.id === +req.params.id);
+    let video  = dbVideos.videos.find(v => v.id === +req.params.id);
     console.log(video, 'update')
     if(!video) return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
     const {availableResolutions} = req.body
@@ -150,9 +150,9 @@ VideoRouter.put('/:id',
 
 
 VideoRouter.delete('/:id', (req: Request, res: Response) => {
-    for (let i=0;i<db.videos.length;i++){
-        if (db.videos[i].id === +req.params.id){
-            db.videos.splice(i,1)
+    for (let i=0; i<dbVideos.videos.length; i++){
+        if (dbVideos.videos[i].id === +req.params.id){
+            dbVideos.videos.splice(i,1)
             return res.sendStatus(204)
         }
     }

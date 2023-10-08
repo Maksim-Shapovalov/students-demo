@@ -1,4 +1,4 @@
-export const db ={
+export const dbVideos ={
     videos: [
         {
             id:1 ,

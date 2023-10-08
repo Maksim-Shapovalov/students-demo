@@ -1,11 +1,14 @@
 import {Request, Response, Router} from "express";
 import {app} from "../index";
-import {db} from "../db-items/db-videos";
+import {dbVideos} from "../db-items/db-videos";
+import {dbBlogsPosts} from "../db-items/db-blogs-posts";
 
 
 export const AllDataClear = Router();
 
 AllDataClear.delete('/', (req:Request, res: Response) => {
-    db.videos = []
+    dbVideos.videos = []
+    dbBlogsPosts.blogs = []
+    dbBlogsPosts.posts = []
     res.sendStatus(204)
 })

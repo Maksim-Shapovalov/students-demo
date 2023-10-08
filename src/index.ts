@@ -2,6 +2,7 @@ import express, {Request, Response} from 'express'
 import bodyParser from 'body-parser'
 import {VideoRouter} from "./routers/video-router";
 import {AllDataClear} from "./routers/all-data-clear";
+import {blogsRouter} from "./routers/blogs-router";
 
 
 export const app = express()
@@ -12,6 +13,7 @@ export const HTTP_STATUS = {
     CREATED_201: 201,
     NO_CONTENT_204: 204,
     BAD_REQUEST_400: 400,
+    UNAUTHORIZED_401: 401,
     NOT_FOUND_404: 404
 }
 
@@ -19,8 +21,9 @@ export const HTTP_STATUS = {
 const parserMiddleware = bodyParser()
 app.use(parserMiddleware)
 
-app.use('/videos',VideoRouter)
-app.use("/testing/all-data",AllDataClear)
+app.use("/videos", VideoRouter)
+app.use("/testing/all-data", AllDataClear)
+app.use("/blogs", blogsRouter)
 
 
 
