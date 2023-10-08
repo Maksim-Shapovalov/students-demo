@@ -25,7 +25,7 @@ export const blogsRepository = {
         return newBlogs
     },
     updateBlogById(id: string, name:string, description: string, websiteUrl: string) {
-        const findBlog: BlogsType | undefined = dbBlogsPosts.blogs.find(b => b.id === id)
+        const findBlog = dbBlogsPosts.blogs.find(b => b.id === id)
         if (!findBlog){
             return false
         }else{
