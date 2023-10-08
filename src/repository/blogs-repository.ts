@@ -14,13 +14,14 @@ export const blogsRepository = {
     createNewBlogs(name:string, description: string, websiteUrl: string) {
         console.log('trash1')
         const newBlogs : BlogsType = {
-            id: new Date().toISOString(),
+            id: (+new Date()).toString(),
             name: name,
             description: description,
             websiteUrl: websiteUrl
         }
         console.log('trash 2', newBlogs)
         dbBlogsPosts.blogs.push(newBlogs)
+
         return newBlogs
     },
     updateBlogById(id: string, name:string, description: string, websiteUrl: string) {

@@ -16,7 +16,7 @@ export const postsRepository = {
     (title:string,shortDescription:string,content:string,blogId:string) {
         const findBlogName = dbBlogsPosts.blogs.find(b=>b.id=== blogId)
         const newPosts: PostsType  = {
-            id: new Date().toISOString(),
+            id: (+new Date()).toString(),
             title: title,
             shortDescription: shortDescription,
             content: content,
