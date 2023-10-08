@@ -14,11 +14,14 @@ blogsRouter.get('/', (req:Request, res: Response) =>{
 })
 blogsRouter.get('/id', (req:Request, res: Response) =>{
     const findBlog = blogsRepository.getBlogsById(req.params.id)
-    if (!findBlog){
+    console.log(findBlog)
+    if (findBlog){
+        res.status(HTTP_STATUS.OK_200).send(findBlog)
+    }else {
         res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
-        return
+
     }
-    res.status(HTTP_STATUS.OK_200).send(findBlog)
+
 })
 blogsRouter.post('/',
     authGuardMiddleware,
