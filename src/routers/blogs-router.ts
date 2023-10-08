@@ -9,7 +9,8 @@ export const blogsRouter = Router()
 
 
 blogsRouter.get('/', (req:Request, res: Response) =>{
-    res.send(blogsRepository.getAllBlogs())
+    let allBlogs = blogsRepository.getAllBlogs();
+    res.status(HTTP_STATUS.OK_200).send(allBlogs)
 })
 blogsRouter.get('/id', (req:Request, res: Response) =>{
     const findBlog = blogsRepository.getBlogsById(req.params.id)
@@ -36,9 +37,9 @@ blogsRouter.put('/:id',
     const {name, description, websiteUrl} = req.body
     const result: boolean = blogsRepository.updateBlogById(req.params.id, name,description,websiteUrl)
     if (result){
-        res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
+       return res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
     }else {
-        res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
+        return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
     }
 })
 blogsRouter.delete('/:id',
@@ -46,8 +47,8 @@ blogsRouter.delete('/:id',
     (req:Request, res: Response) => {
     const result:boolean = blogsRepository.deleteBlogsById(req.params.id)
     if (result) {
-        res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
+        return res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
     }else {
-        res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
+       return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
     }
 })

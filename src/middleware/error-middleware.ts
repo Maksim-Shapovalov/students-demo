@@ -4,7 +4,7 @@ import {HTTP_STATUS} from "../index";
 
 const ErrorFormatter = (e : ValidationError) => {
     return {
-            message: e.msg,
+            message: e. msg,
         //@ts-ignore
             field: e.path
     }

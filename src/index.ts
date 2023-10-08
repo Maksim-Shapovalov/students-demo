@@ -1,5 +1,4 @@
 import express, {Request, Response} from 'express'
-import bodyParser from 'body-parser'
 import {VideoRouter} from "./routers/video-router";
 import {AllDataClear} from "./routers/all-data-clear";
 import {blogsRouter} from "./routers/blogs-router";
