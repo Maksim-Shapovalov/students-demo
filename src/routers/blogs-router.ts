@@ -12,15 +12,13 @@ blogsRouter.get('/', (req:Request, res: Response) =>{
     let allBlogs = blogsRepository.getAllBlogs();
     res.status(HTTP_STATUS.OK_200).send(allBlogs)
 })
-blogsRouter.get('/id', (req:Request, res: Response) =>{
-    const findBlog = blogsRepository.getBlogsById(req.params.id)
-    console.log(findBlog)
-    if (findBlog){
-        res.status(HTTP_STATUS.OK_200).send(findBlog)
-    }else {
-        res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
-
-    }
+blogsRouter.get('/:id', (req: Request, res: Response) => {
+        let blog = blogsRepository.getBlogsById(req.params.id)
+        if (blog){
+            res.status(200).send(blog)
+        } else {
+            res.sendStatus(404)
+        }
 
 })
 blogsRouter.post('/',
