@@ -41,7 +41,7 @@ export const postsRepository = {
         if (findPosts === -1){
             return false
         }else{
-            dbBlogsPosts.blogs.splice(findPosts,1)
+            dbBlogsPosts.posts.splice(findPosts,1)
             return true
         }
     }
