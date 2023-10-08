@@ -21,7 +21,7 @@ postsRouter.get('/id', (req:Request, res: Response) =>{
 })
 postsRouter.post('/',
     authGuardMiddleware,
-    PostsValidation,
+    PostsValidation(),
     ErrorMiddleware,
     (req:Request, res: Response) =>{
     const {title, shortDescription, content, blogId} = req.body
@@ -30,7 +30,7 @@ postsRouter.post('/',
 })
 postsRouter.put('/:id',
     authGuardMiddleware,
-    PostsValidation,
+    PostsValidation(),
     ErrorMiddleware,
     (req:Request, res: Response) => {
     const {title, shortDescription, content, blogId} = req.body

@@ -22,16 +22,15 @@ blogsRouter.get('/id', (req:Request, res: Response) =>{
 })
 blogsRouter.post('/',
     authGuardMiddleware,
-    BlogsValidation,
+    BlogsValidation(),
     ErrorMiddleware,
     (req:Request, res: Response) =>{
-    const {name, description, websiteUrl} = req.body
-    const newBlogs = blogsRepository.createNewBlogs(name,description,websiteUrl)
-    res.status(HTTP_STATUS.CREATED_201).send(newBlogs)
+    const newBlog = blogsRepository.createNewBlogs(req.body.name, req.body.description, req.body.websiteUrl)
+    res.status(HTTP_STATUS.CREATED_201).send(newBlog)
 })
 blogsRouter.put('/:id',
     authGuardMiddleware,
-    BlogsValidation,
+    BlogsValidation(),
     ErrorMiddleware,
     (req:Request, res: Response) => {
     const {name, description, websiteUrl} = req.body

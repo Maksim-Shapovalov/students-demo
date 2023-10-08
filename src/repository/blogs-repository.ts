@@ -12,12 +12,14 @@ export const blogsRepository = {
         return dbBlogsPosts.blogs.find(b=>b.id===id)
     },
     createNewBlogs(name:string, description: string, websiteUrl: string) {
+        console.log('trash1')
         const newBlogs : BlogsType = {
             id: new Date().toISOString(),
             name: name,
             description: description,
             websiteUrl: websiteUrl
         }
+        console.log('trash 2', newBlogs)
         dbBlogsPosts.blogs.push(newBlogs)
         return newBlogs
     },

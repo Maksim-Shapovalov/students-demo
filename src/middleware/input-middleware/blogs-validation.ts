@@ -20,7 +20,7 @@ export const BlogsValidation = ()=>(
             .isLength({min:1,max:100})
             .notEmpty()
             .matches('^https://([a-zA-Z0-9_-]+\.)+[a-zA-Z0-9_-]+(\/[a-zA-Z0-9_-]+)*\/?$')
-            .withMessage('InvalidUrl')
+            .withMessage('Invalid websiteUrl')
 
     ]
 )
