@@ -2,6 +2,8 @@ import {Request, Response, Router} from "express";
 import {blogsRepository} from "../repository/blogs-repository";
 import {HTTP_STATUS} from "../index";
 import {authGuardMiddleware} from "../middleware/register-middleware";
+import {BlogsValidation} from "../middleware/input-middleware/blogs-validation";
+import {ErrorMiddleware} from "../middleware/error-middleware";
 
 export const blogsRouter = Router()
 
@@ -19,6 +21,8 @@ blogsRouter.get('/id', (req:Request, res: Response) =>{
 })
 blogsRouter.post('/',
     authGuardMiddleware,
+    BlogsValidation,
+    ErrorMiddleware,
     (req:Request, res: Response) =>{
     const {name, description, websiteUrl} = req.body
     const newBlogs = blogsRepository.createNewBlogs(name,description,websiteUrl)
@@ -26,6 +30,8 @@ blogsRouter.post('/',
 })
 blogsRouter.put('/:id',
     authGuardMiddleware,
+    BlogsValidation,
+    ErrorMiddleware,
     (req:Request, res: Response) => {
     const {name, description, websiteUrl} = req.body
     const result: boolean = blogsRepository.updateBlogById(req.params.id, name,description,websiteUrl)
