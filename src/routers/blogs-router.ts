@@ -26,6 +26,7 @@ blogsRouter.post('/',
     ErrorMiddleware,
     (req:Request, res: Response) =>{
     const newBlog = blogsRepository.createNewBlogs(req.body.name, req.body.description, req.body.websiteUrl)
+        console.log(newBlog)
     res.status(HTTP_STATUS.CREATED_201).send(newBlog)
 })
 blogsRouter.put('/:id',
