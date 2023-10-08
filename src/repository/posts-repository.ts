@@ -7,9 +7,6 @@ export const postsRepository = {
         return dbBlogsPosts.posts
     },
     getPostsById(id:string){
-        if (!id){
-            return dbBlogsPosts.posts
-        }
         return dbBlogsPosts.posts.find(p=>p.id===id)
     },
     createNewPosts

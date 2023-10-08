@@ -15,7 +15,6 @@ postsRouter.get('/id', (req:Request, res: Response) =>{
     const findPosts = postsRepository.getPostsById(req.params.id)
     if (!findPosts){
         res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
-        return
     }
     res.status(HTTP_STATUS.OK_200).send(findPosts)
 })
