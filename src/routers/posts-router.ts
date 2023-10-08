@@ -12,11 +12,12 @@ postsRouter.get('/', (req:Request, res: Response) =>{
     res.send(postsRepository.getAllPosts())
 })
 postsRouter.get('/id', (req:Request, res: Response) =>{
-    const findPosts = postsRepository.getPostsById(req.params.id)
-    if (!findPosts){
-        res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
+    let post = postsRepository.getPostsById(req.params.id)
+    if (post){
+        res.status(200).send(post)
+    } else {
+        res.sendStatus(404)
     }
-    res.status(HTTP_STATUS.OK_200).send(findPosts)
 })
 postsRouter.post('/',
     authGuardMiddleware,
