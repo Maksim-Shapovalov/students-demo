@@ -6,8 +6,10 @@ import {postsRouter} from "./routers/posts-router";
 import {runDB} from "./DB/data-base";
 
 
-const app = express()
+export const app = express()
 export const port = process.env.PORT || 3000
+
+console.log(port)
 
 export const HTTP_STATUS = {
     OK_200: 200,
@@ -17,7 +19,6 @@ export const HTTP_STATUS = {
     UNAUTHORIZED_401: 401,
     NOT_FOUND_404: 404
 }
-
 
 app.use(express.json());
 app.use("/videos", VideoRouter)

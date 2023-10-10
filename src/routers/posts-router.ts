@@ -6,10 +6,14 @@ import {postsRepository} from "../repository/posts-repository";
 import {PostsValidation} from "../middleware/input-middleware/posts-validation";
 import {ErrorMiddleware} from "../middleware/error-middleware";
 import {authGuardMiddleware} from "../middleware/register-middleware";
+import {BlogsType} from "../types/blogs-type";
+import {PostsType} from "../types/posts-type";
 
 export const postsRouter = Router()
 postsRouter.get('/', async (req:Request, res: Response) =>{
-    res.send(postsRepository.getAllPosts())
+    const allPostsPromise: Promise<PostsType[]> = postsRepository.getAllPosts();
+    const allBlogs: PostsType[] = await allPostsPromise
+    res.send(allBlogs)
 })
 postsRouter.get('/:id', async (req:Request, res: Response) =>{
     let post = await postsRepository.getPostsById(req.params.id)

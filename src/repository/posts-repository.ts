@@ -3,13 +3,14 @@ import {BlogsType} from "../types/blogs-type";
 import {PostsType} from "../types/posts-type";
 import {dataBlog, dataPost} from "../DB/data-base";
 import {raw} from "express";
+import {ObjectId} from "mongodb";
 
 export const postsRepository = {
     async getAllPosts(): Promise<PostsType[]>{
         return await dataPost.find({}).toArray()
     },
     async getPostsById(id: string):Promise<PostsType | undefined> {
-        const findPosts = await dataPost.findOne({_id: new Object(id)});
+        const findPosts = await dataPost.findOne({_id: new ObjectId(id)});
         if (!findPosts){
             return undefined
         }
@@ -17,9 +18,9 @@ export const postsRepository = {
     },
     async createNewPosts
     (title:string,shortDescription:string,content:string,blogId:string): Promise<PostsType> {
-        const findBlogName = await dataBlog.findOne({_id:new Object(blogId)})
+        const findBlogName = await dataBlog.findOne({_id:new ObjectId(blogId)})
+        console.log(findBlogName)
         const newPosts: PostsType  = {
-            id: {}.toString(),
             title: title,
             shortDescription: shortDescription,
             content: content,
@@ -33,7 +34,7 @@ export const postsRepository = {
     },
     async updatePostsById
     (id: string, title:string,shortDescription:string,content:string,blogId:string): Promise<boolean> {
-        const findPosts = await dataPost.findOne({_id: new Object(id)})
+        const findPosts = await dataPost.findOne({_id: new ObjectId(id)})
         if (!findPosts){
             return false
         }else{
@@ -45,7 +46,7 @@ export const postsRepository = {
         }
     },
     async deletePostsById(id: string): Promise<boolean>{
-        const findPost = await dataPost.deleteOne({_id: new Object(id)})
+        const findPost = await dataPost.deleteOne({_id: new ObjectId(id)})
         return findPost.deletedCount === 1
 
     }

@@ -10,10 +10,10 @@ if (!url){
     throw new Error('Url doesnt found')
 }
 export const client = new MongoClient(url)
-const db =client.db("duplicate-code")
+const db = client.db("duplicate-code")
 
 export const dataBlog = db.collection<BlogsType>("blogs")
-export const dataPost = db.collection<PostsType>("blogs")
+export const dataPost = db.collection<PostsType>("posts")
 
 export const runDB = async () => {
     try{

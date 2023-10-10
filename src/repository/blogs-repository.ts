@@ -1,6 +1,7 @@
 import {dbBlogsPosts} from "../db-items/db-blogs-posts";
 import {BlogsType} from "../types/blogs-type";
 import {dataBlog} from "../DB/data-base";
+import {ObjectId} from "mongodb";
 
 export const blogsRepository = {
     async getAllBlogs(): Promise<BlogsType[]>{
@@ -8,7 +9,7 @@ export const blogsRepository = {
 
     },
     async getBlogsById(id:string): Promise<BlogsType | undefined>{
-        const findCursor = await dataBlog.findOne({_id: new Object(id)});
+        const findCursor = await dataBlog.findOne({_id: new ObjectId(id)});
         if (!findCursor){
             return undefined
         }
@@ -16,7 +17,6 @@ export const blogsRepository = {
     },
    async createNewBlogs(name:string, description: string, websiteUrl: string): Promise<BlogsType> {
         const newBlogs : BlogsType = {
-            id: {}.toString(),
             name: name,
             description: description,
             websiteUrl: websiteUrl,
@@ -27,7 +27,7 @@ export const blogsRepository = {
         return newBlogs
     },
    async updateBlogById(id: string, name:string, description: string, websiteUrl: string) {
-        const findBlog = await dataBlog.findOne({id: new Object(id)})
+        const findBlog = await dataBlog.findOne({_id: new ObjectId(id)})
         if (!findBlog){
             return false
         }else{
@@ -38,7 +38,7 @@ export const blogsRepository = {
         }
     },
    async deleteBlogsById(id: string) :Promise<boolean> {
-        const findBlog = await dataBlog.deleteOne({_id: new Object(id) })
+        const findBlog = await dataBlog.deleteOne({_id: new ObjectId(id) })
        return findBlog.deletedCount === 1
 
     }
