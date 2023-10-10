@@ -44,9 +44,9 @@ export const postsRepository = {
             return true
         }
     },
-    deletePostsById(id: string){
-        dataPost.deleteOne({_id: new Object(id)})
-        return true
+    async deletePostsById(id: string): Promise<boolean>{
+        const findPost = await dataPost.deleteOne({_id: new Object(id)})
+        return findPost.deletedCount === 1
 
     }
 
