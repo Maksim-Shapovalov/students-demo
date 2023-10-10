@@ -27,15 +27,8 @@ export const blogsRepository = {
         return newBlogs
     },
    async updateBlogById(id: string, name:string, description: string, websiteUrl: string) {
-        const findBlog = await dataBlog.findOne({_id: new ObjectId(id)})
-        if (!findBlog){
-            return false
-        }else{
-            findBlog.name = name
-            findBlog.description = description
-            findBlog.websiteUrl = websiteUrl
-            return true
-        }
+       const res = await dataBlog.updateOne({_id: new ObjectId(id)}, {$set: {name,description, websiteUrl}})
+       return res.matchedCount === 1
     },
    async deleteBlogsById(id: string) :Promise<boolean> {
         const findBlog = await dataBlog.deleteOne({_id: new ObjectId(id) })

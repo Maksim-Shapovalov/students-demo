@@ -9,10 +9,10 @@ export const postsRepository = {
     async getAllPosts(): Promise<PostsType[]>{
         return await dataPost.find({}).toArray()
     },
-    async getPostsById(id: string):Promise<PostsType | undefined> {
+    async getPostsById(id: string):Promise<PostsType | null> {
         const findPosts = await dataPost.findOne({_id: new ObjectId(id)});
         if (!findPosts){
-            return undefined
+            return null
         }
         return findPosts
     },
@@ -34,16 +34,8 @@ export const postsRepository = {
     },
     async updatePostsById
     (id: string, title:string,shortDescription:string,content:string,blogId:string): Promise<boolean> {
-        const findPosts = await dataPost.findOne({_id: new ObjectId(id)})
-        if (!findPosts){
-            return false
-        }else{
-            findPosts.title = title
-            findPosts.shortDescription = shortDescription
-            findPosts.content = content
-            findPosts.blogId = blogId
-            return true
-        }
+        const res = await dataPost.updateOne({_id: new ObjectId(id)}, {$set: {title,shortDescription, content, blogId}})
+        return res.matchedCount === 1
     },
     async deletePostsById(id: string): Promise<boolean>{
         const findPost = await dataPost.deleteOne({_id: new ObjectId(id)})

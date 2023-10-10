@@ -39,12 +39,12 @@ blogsRouter.put('/:id',
     ErrorMiddleware,
     async (req:Request, res: Response) => {
     const {name, description, websiteUrl} = req.body
-    const result: boolean = await blogsRepository.updateBlogById(req.params.id, name,description,websiteUrl)
-    if (result){
-       return res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
-    }else {
-        return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
+    const result = await blogsRepository.updateBlogById(req.params.id, name,description,websiteUrl)
+    if (!result){
+        res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
+       return
     }
+    res.sendStatus(HTTP_STATUS.NO_CONTENT_204).send(result)
 })
 blogsRouter.delete('/:id',
     authGuardMiddleware,
