@@ -5,20 +5,21 @@ import {BlogsType} from "../types/blogs-type";
 config()
 
 
-const url = process.env.MONGO_URL
+const url = process.env.MONGO_URL || "mongodb://localhost:27017"
 if (!url){
     throw new Error('Url doesnt found')
 }
-const client = new MongoClient(url)
-
+export const client = new MongoClient(url)
 const db =client.db("duplicate-code")
+
 export const dataBlog = db.collection<BlogsType>("blogs")
 export const dataPost = db.collection<PostsType>("blogs")
+
 export const runDB = async () => {
     try{
         await client.connect()
         console.log('Connected successfully to server')
-    } catch (e) {
+    } catch {
         await client.close()
     }
 }

@@ -1,4 +1,4 @@
-import express, {Request, Response} from 'express'
+import express from 'express'
 import {VideoRouter} from "./routers/video-router";
 import {AllDataClear} from "./routers/all-data-clear";
 import {blogsRouter} from "./routers/blogs-router";
@@ -6,8 +6,8 @@ import {postsRouter} from "./routers/posts-router";
 import {runDB} from "./DB/data-base";
 
 
-export const app = express()
-const port = process.env.PORT || 3000
+const app = express()
+export const port = process.env.PORT || 3000
 
 export const HTTP_STATUS = {
     OK_200: 200,
@@ -32,3 +32,4 @@ const startApp = async () => {
         console.log(`Example app listening on port ${port}`)
     })
 }
+startApp()
