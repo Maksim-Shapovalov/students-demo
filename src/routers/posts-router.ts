@@ -8,11 +8,11 @@ import {ErrorMiddleware} from "../middleware/error-middleware";
 import {authGuardMiddleware} from "../middleware/register-middleware";
 
 export const postsRouter = Router()
-postsRouter.get('/', (req:Request, res: Response) =>{
+postsRouter.get('/', async (req:Request, res: Response) =>{
     res.send(postsRepository.getAllPosts())
 })
-postsRouter.get('/:id', (req:Request, res: Response) =>{
-    let post = postsRepository.getPostsById(req.params.id)
+postsRouter.get('/:id', async (req:Request, res: Response) =>{
+    let post = await postsRepository.getPostsById(req.params.id)
     if (post){
         res.status(200).send(post)
     } else {
@@ -23,31 +23,31 @@ postsRouter.post('/',
     authGuardMiddleware,
     PostsValidation(),
     ErrorMiddleware,
-    (req:Request, res: Response) =>{
+    async (req:Request, res: Response) =>{
     const {title, shortDescription, content, blogId} = req.body
-    const newBlogs = postsRepository.createNewPosts(title,shortDescription,content,blogId)
+    const newBlogs = await postsRepository.createNewPosts(title,shortDescription,content,blogId)
     res.status(HTTP_STATUS.CREATED_201).send(newBlogs)
 })
 postsRouter.put('/:id',
     authGuardMiddleware,
     PostsValidation(),
     ErrorMiddleware,
-    (req:Request, res: Response) => {
-    const {title, shortDescription, content, blogId} = req.body
-    const result: boolean = postsRepository.updatePostsById(req.params.id, title, shortDescription, content, blogId)
-    if (result){
-        res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
-    }else {
-        res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
-    }
-})
+    async (req: Request, res: Response) => {
+        const {title, shortDescription, content, blogId} = req.body
+        const result = await postsRepository.updatePostsById(req.params.id, title, shortDescription, content, blogId)
+        if (result) {
+            res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
+        } else {
+            res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
+        }
+    })
 postsRouter.delete('/:id',
     authGuardMiddleware,
-    (req:Request, res: Response) => {
-    const result:boolean = postsRepository.deletePostsById(req.params.id)
-    if (result) {
-        return res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
-    }else {
-        return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
-    }
-})
+    async (req: Request, res: Response) => {
+        const result: boolean = await postsRepository.deletePostsById(req.params.id)
+        if (result) {
+            return res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
+        } else {
+            return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
+        }
+    })
