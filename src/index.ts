@@ -3,6 +3,7 @@ import {VideoRouter} from "./routers/video-router";
 import {AllDataClear} from "./routers/all-data-clear";
 import {blogsRouter} from "./routers/blogs-router";
 import {postsRouter} from "./routers/posts-router";
+import {runDB} from "./DB/data-base";
 
 
 export const app = express()
@@ -24,6 +25,10 @@ app.use("/testing/all-data", AllDataClear)
 app.use("/blogs", blogsRouter)
 app.use("/posts", postsRouter)
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-})
+
+const startApp = async () => {
+    await runDB()
+    app.listen(port, () => {
+        console.log(`Example app listening on port ${port}`)
+    })
+}

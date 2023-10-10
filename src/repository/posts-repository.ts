@@ -1,31 +1,39 @@
 import {dbBlogsPosts} from "../db-items/db-blogs-posts";
 import {BlogsType} from "../types/blogs-type";
 import {PostsType} from "../types/posts-type";
+import {dataBlog, dataPost} from "../DB/data-base";
+import {raw} from "express";
 
 export const postsRepository = {
-    getAllPosts(){
-        return dbBlogsPosts.posts
+    async getAllPosts(): Promise<PostsType[]>{
+        return await dataPost.find({}).toArray()
     },
-    getPostsById(id:string){
-        return dbBlogsPosts.posts.find(p=>p.id===id)
+    async getPostsById(id: string):Promise<PostsType | undefined> {
+        const findPosts = await dataPost.findOne({_id: new Object(id)});
+        if (!findPosts){
+            return undefined
+        }
+        return findPosts
     },
-    createNewPosts
-    (title:string,shortDescription:string,content:string,blogId:string) {
-        const findBlogName = dbBlogsPosts.blogs.find(b=>b.id=== blogId)
+    async createNewPosts
+    (title:string,shortDescription:string,content:string,blogId:string): Promise<PostsType> {
+        const findBlogName = await dataBlog.findOne({_id:new Object(blogId)})
         const newPosts: PostsType  = {
-            id: (+new Date()).toString(),
+            id: {}.toString(),
             title: title,
             shortDescription: shortDescription,
             content: content,
             blogId: blogId,
-            blogName: findBlogName!.name
+            blogName: findBlogName!.name,
+            createdAt: new Date().toISOString(),
+            isMembership: false
         }
-        dbBlogsPosts.posts.push(newPosts)
+        dataPost.insertOne(newPosts)
         return newPosts
     },
-    updatePostsById
-    (id: string, title:string,shortDescription:string,content:string,blogId:string) {
-        const findPosts: PostsType | undefined = dbBlogsPosts.posts.find(p => p.id === id)
+    async updatePostsById
+    (id: string, title:string,shortDescription:string,content:string,blogId:string): Promise<boolean> {
+        const findPosts = await dataPost.findOne({_id: new Object(id)})
         if (!findPosts){
             return false
         }else{
@@ -37,11 +45,7 @@ export const postsRepository = {
         }
     },
     deletePostsById(id: string){
-        const findPosts = dbBlogsPosts.posts.findIndex(b=>b.id === id)
-        if (findPosts === -1){
-            return false
-        }
-        dbBlogsPosts.posts.splice(findPosts,1)
+        dataPost.deleteOne({_id: new Object(id)})
         return true
 
     }

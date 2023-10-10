@@ -1,28 +1,33 @@
 import {dbBlogsPosts} from "../db-items/db-blogs-posts";
 import {BlogsType} from "../types/blogs-type";
+import {dataBlog} from "../DB/data-base";
 
 export const blogsRepository = {
-    getAllBlogs(){
-        return dbBlogsPosts.blogs
+    async getAllBlogs(): Promise<BlogsType[]>{
+        return await dataBlog.find({}).toArray()
+
     },
-    getBlogsById(id:string){
-        return dbBlogsPosts.blogs.find(b=>b.id===id)
+    async getBlogsById(id:string): Promise<BlogsType | undefined>{
+        const findCursor = await dataBlog.findOne({_id: new Object(id)});
+        if (!findCursor){
+            return undefined
+        }
+        return findCursor
     },
-    createNewBlogs(name:string, description: string, websiteUrl: string) {
-        console.log('trash1')
+   async createNewBlogs(name:string, description: string, websiteUrl: string): Promise<BlogsType> {
         const newBlogs : BlogsType = {
-            id: (+new Date()).toString(),
+            id: {}.toString(),
             name: name,
             description: description,
-            websiteUrl: websiteUrl
+            websiteUrl: websiteUrl,
+            createdAt: new Date().toISOString(),
+            isMembership: false
         }
-        console.log('trash 2', newBlogs)
-        dbBlogsPosts.blogs.push(newBlogs)
-
+        await dataBlog.insertOne(newBlogs)
         return newBlogs
     },
-    updateBlogById(id: string, name:string, description: string, websiteUrl: string) {
-        const findBlog = dbBlogsPosts.blogs.find(b => b.id === id)
+   async updateBlogById(id: string, name:string, description: string, websiteUrl: string) {
+        const findBlog = await dataBlog.findOne({id: new Object(id)})
         if (!findBlog){
             return false
         }else{
@@ -32,14 +37,10 @@ export const blogsRepository = {
             return true
         }
     },
-    deleteBlogsById(id: string){
-        const findBlog = dbBlogsPosts.blogs.findIndex(b=>b.id === id)
-        if (findBlog === -1){
-            return false
-        }else{
-            dbBlogsPosts.blogs.splice(findBlog,1)
-            return true
-        }
+   async deleteBlogsById(id: string) :Promise<boolean> {
+        const findBlog = await dataBlog.deleteOne({_id: new Object(id) })
+       return findBlog.deletedCount === 1
+
     }
 
 }
