@@ -22,8 +22,8 @@ export const PostsValidation = ()=>(
             .notEmpty()
             .withMessage('Invalid content'),
         body('blogId')
-            .custom((value) => {
-                const findBlog = blogsRepository.getBlogsById(value)
+            .custom(async (value) => {
+                const findBlog = await blogsRepository.getBlogsById(value)
                 if (!findBlog){
                     throw new Error('Blog not exist')
                 }

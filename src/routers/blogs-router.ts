@@ -5,6 +5,7 @@ import {authGuardMiddleware} from "../middleware/register-middleware";
 import {BlogsValidation} from "../middleware/input-middleware/blogs-validation";
 import {ErrorMiddleware} from "../middleware/error-middleware";
 import {BlogsType} from "../types/blogs-type";
+import {postsRepository} from "../repository/posts-repository";
 
 export const blogsRouter = Router()
 
@@ -48,10 +49,12 @@ blogsRouter.put('/:id',
 blogsRouter.delete('/:id',
     authGuardMiddleware,
     async (req:Request, res: Response) => {
-    const result:boolean = await    blogsRepository.deleteBlogsById(req.params.id)
-    if (result) {
-        return res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
-    }else {
-       return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
-    }
+        const deleted = await blogsRepository.deleteBlogsById(req.params.id)
+
+        if (!deleted) {
+            res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
+            return
+        }
+
+        res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
 })

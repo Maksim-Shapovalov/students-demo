@@ -48,10 +48,12 @@ postsRouter.put('/:id',
 postsRouter.delete('/:id',
     authGuardMiddleware,
     async (req: Request, res: Response) => {
-        const result: boolean = await postsRepository.deletePostsById(req.params.id)
-        if (result) {
-            return res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
-        } else {
-            return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
+        const deleted = await postsRepository.deletePostsById(req.params.id)
+
+        if (!deleted) {
+            res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
+            return
         }
+
+        res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
     })
