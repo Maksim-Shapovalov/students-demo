@@ -7,7 +7,7 @@ export const postsRepository = {
         const result = await dataPost.find({}).toArray();
         return result.map((p) => postMapper(p))
     },
-    async getPostsById(id: string):Promise<PostsType | null> {
+    async getPostsById(id: string):Promise<PostOutputModel | null> {
         const findPosts = await dataPost.findOne({_id: new ObjectId(id)});
         console.log(findPosts)
         if (!findPosts){
@@ -16,7 +16,7 @@ export const postsRepository = {
         return postMapper(findPosts)
     },
     async createNewPosts
-    (title:string,shortDescription:string,content:string,blogId:string): Promise<PostsType> {
+    (title:string,shortDescription:string,content:string,blogId:string): Promise<PostOutputModel> {
         const findBlogName = await dataBlog.findOne({_id:new ObjectId(blogId)})
         console.log(findBlogName)
         const newPosts: PostsType  = {

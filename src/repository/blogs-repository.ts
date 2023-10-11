@@ -8,14 +8,14 @@ export const blogsRepository = {
         return res.map((b) => blogMapper(b))
 
     },
-    async getBlogsById(id:string): Promise<BlogsType | undefined>{
+    async getBlogsById(id:string): Promise<BlogsOutputModel | undefined>{
         const findCursor = await dataBlog.findOne({_id: new ObjectId(id)});
         if (!findCursor){
             return undefined
         }
         return blogMapper(findCursor)
     },
-   async createNewBlogs(name:string, description: string, websiteUrl: string): Promise<BlogsType> {
+   async createNewBlogs(name:string, description: string, websiteUrl: string): Promise<BlogsOutputModel> {
         const newBlogs : BlogsType = {
             name: name,
             description: description,
@@ -26,7 +26,7 @@ export const blogsRepository = {
        // const result = await dataBlog.insertOne(newBlogs);
        // newBlogs.id = result.insertedId.toString();
        // await dataBlog.insertOne(newBlogs)
-       const res = await dataBlog.insertOne(newBlogs)
+       const res = await dataBlog.insertOne({...newBlogs})
        return blogMapper({...newBlogs, _id: res.insertedId})
     },
    async updateBlogById(id: string, name:string, description: string, websiteUrl: string): Promise<boolean> {
