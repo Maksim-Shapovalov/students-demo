@@ -41,9 +41,10 @@ blogsRouter.put('/:id',
     const result = await blogsRepository.updateBlogById(req.params.id, req.body.name,req.body.description,req.body.websiteUrl)
     if (!result){
         res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
-       return
+    }else {
+        res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
     }
-    res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
+
 })
 blogsRouter.delete('/:id',
     authGuardMiddleware,
