@@ -1,13 +1,11 @@
-import {dbBlogsPosts} from "../db-items/db-blogs-posts";
-import {BlogsType} from "../types/blogs-type";
-import {PostsType} from "../types/posts-type";
+import {PostOutputModel, PostsType} from "../types/posts-type";
 import {dataBlog, dataPost} from "../DB/data-base";
-import {raw} from "express";
-import {ObjectId} from "mongodb";
+import {ObjectId, WithId} from "mongodb";
 
 export const postsRepository = {
-    async getAllPosts(): Promise<PostsType[]>{
-        return await dataPost.find({}).toArray()
+    async getAllPosts(): Promise<PostOutputModel[]>{
+        const result = await dataPost.find({}).toArray();
+        return result.map((p) => postMapper(p))
     },
     async getPostsById(id: string):Promise<PostsType | null> {
         const findPosts = await dataPost.findOne({_id: new ObjectId(id)});
@@ -15,7 +13,7 @@ export const postsRepository = {
         if (!findPosts){
             return null
         }
-        return findPosts
+        return postMapper(findPosts)
     },
     async createNewPosts
     (title:string,shortDescription:string,content:string,blogId:string): Promise<PostsType> {
@@ -30,8 +28,8 @@ export const postsRepository = {
             createdAt: new Date().toISOString(),
             isMembership: false
         }
-        dataPost.insertOne(newPosts)
-        return newPosts
+        const result = await dataPost.insertOne({...newPosts})
+        return postMapper({...newPosts, _id: result.insertedId})
     },
     async updatePostsById
     (id: string, title:string,shortDescription:string,content:string,blogId:string): Promise<boolean> {
@@ -44,4 +42,17 @@ export const postsRepository = {
 
     }
 
+}
+
+const postMapper = (post: WithId<PostsType>): PostOutputModel => {
+    return {
+        id: post._id.toString(),
+        title: post.title,
+        shortDescription: post.shortDescription,
+        content: post.content,
+        blogId: post.blogId,
+        blogName: post.blogName,
+        createdAt: post.createdAt,
+        isMembership: post.isMembership
+    }
 }

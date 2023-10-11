@@ -1,11 +1,11 @@
-import {dbBlogsPosts} from "../db-items/db-blogs-posts";
-import {BlogsType} from "../types/blogs-type";
+import {BlogsOutputModel, BlogsType} from "../types/blogs-type";
 import {dataBlog} from "../DB/data-base";
-import {ObjectId} from "mongodb";
+import {ObjectId, WithId} from "mongodb";
 
 export const blogsRepository = {
-    async getAllBlogs(): Promise<BlogsType[]>{
-        return await dataBlog.find({}).toArray()
+    async getAllBlogs(): Promise<BlogsOutputModel[]>{
+        const res =  await dataBlog.find({}).toArray()
+        return res.map((b) => blogMapper(b))
 
     },
     async getBlogsById(id:string): Promise<BlogsType | undefined>{
@@ -13,11 +13,10 @@ export const blogsRepository = {
         if (!findCursor){
             return undefined
         }
-        return findCursor
+        return blogMapper(findCursor)
     },
    async createNewBlogs(name:string, description: string, websiteUrl: string): Promise<BlogsType> {
         const newBlogs : BlogsType = {
-            id: new ObjectId().toString(),
             name: name,
             description: description,
             websiteUrl: websiteUrl,
@@ -27,8 +26,8 @@ export const blogsRepository = {
        // const result = await dataBlog.insertOne(newBlogs);
        // newBlogs.id = result.insertedId.toString();
        // await dataBlog.insertOne(newBlogs)
-       await dataBlog.insertOne(newBlogs)
-       return newBlogs
+       const res = await dataBlog.insertOne(newBlogs)
+       return blogMapper({...newBlogs, _id: res.insertedId})
     },
    async updateBlogById(id: string, name:string, description: string, websiteUrl: string): Promise<boolean> {
        const res = await dataBlog.updateOne({_id: new ObjectId(id)}, {$set: {name,description, websiteUrl}})
@@ -40,4 +39,14 @@ export const blogsRepository = {
 
     }
 
+}
+const blogMapper = (blog: WithId<BlogsType>): BlogsOutputModel => {
+    return {
+        id: blog._id.toString(),
+        name: blog.name,
+        description: blog.description,
+        websiteUrl: blog.websiteUrl,
+        createdAt: blog.createdAt,
+        isMembership: blog.isMembership
+    }
 }

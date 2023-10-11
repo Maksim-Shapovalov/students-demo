@@ -4,15 +4,15 @@ import {HTTP_STATUS} from "../index";
 import {authGuardMiddleware} from "../middleware/register-middleware";
 import {BlogsValidation} from "../middleware/input-middleware/blogs-validation";
 import {ErrorMiddleware} from "../middleware/error-middleware";
-import {BlogsType} from "../types/blogs-type";
-import {postsRepository} from "../repository/posts-repository";
+import {BlogsOutputModel, BlogsType} from "../types/blogs-type";
+import {WithId} from "mongodb";
+
 
 export const blogsRouter = Router()
 
 
 blogsRouter.get('/', async (req:Request, res: Response) =>{
-    const allBlogsPromise: Promise<BlogsType[]> = blogsRepository.getAllBlogs();
-    const allBlogs: BlogsType[] = await allBlogsPromise
+    const allBlogs = await blogsRepository.getAllBlogs();
     res.status(HTTP_STATUS.OK_200).send(allBlogs)
 })
 blogsRouter.get('/:id',
@@ -58,3 +58,4 @@ blogsRouter.delete('/:id',
 
         res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
 })
+

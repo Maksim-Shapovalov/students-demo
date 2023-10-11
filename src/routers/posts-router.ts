@@ -1,12 +1,9 @@
 import {Request, Response, Router} from "express";
-import {blogsRepository} from "../repository/blogs-repository";
 import {HTTP_STATUS} from "../index";
-import {blogsRouter} from "./blogs-router";
 import {postsRepository} from "../repository/posts-repository";
 import {PostsValidation} from "../middleware/input-middleware/posts-validation";
 import {ErrorMiddleware} from "../middleware/error-middleware";
 import {authGuardMiddleware} from "../middleware/register-middleware";
-import {BlogsType} from "../types/blogs-type";
 import {PostsType} from "../types/posts-type";
 
 export const postsRouter = Router()
@@ -57,3 +54,4 @@ postsRouter.delete('/:id',
 
         res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
     })
+
