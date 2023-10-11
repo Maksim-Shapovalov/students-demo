@@ -26,7 +26,6 @@ export const postsRepository = {
             blogId: blogId,
             blogName: findBlogName!.name,
             createdAt: new Date().toISOString(),
-            isMembership: false
         }
         const result = await dataPost.insertOne({...newPosts})
         return postMapper({...newPosts, _id: result.insertedId})
@@ -52,7 +51,6 @@ const postMapper = (post: WithId<PostsType>): PostOutputModel => {
         content: post.content,
         blogId: post.blogId,
         blogName: post.blogName,
-        createdAt: post.createdAt,
-        isMembership: post.isMembership
+        createdAt: post.createdAt
     }
 }

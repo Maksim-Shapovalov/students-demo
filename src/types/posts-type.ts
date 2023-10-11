@@ -6,7 +6,6 @@ export type PostOutputModel = {
     blogId: string
     blogName: string
     createdAt: string
-    isMembership: boolean
 }
 
 
@@ -20,5 +19,4 @@ export type PostsType = {
     blogId: string
     blogName: string
     createdAt: string
-    isMembership: boolean
 }
