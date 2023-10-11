@@ -43,7 +43,7 @@ blogsRouter.put('/:id',
         res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
        return
     }
-    res.sendStatus(HTTP_STATUS.NO_CONTENT_204).send(result)
+    res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
 })
 blogsRouter.delete('/:id',
     authGuardMiddleware,
