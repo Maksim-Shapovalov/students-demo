@@ -9,7 +9,7 @@ const url = process.env.MONGO_URL || "mongodb://localhost:27017"
 if (!url){
     throw new Error('Url doesnt found')
 }
-export const client = new MongoClient(url)
+const client = new MongoClient(url)
 const db = client.db("duplicate-code")
 
 export const dataBlog = db.collection<BlogsType>("blogs")

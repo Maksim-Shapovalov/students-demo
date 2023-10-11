@@ -15,7 +15,8 @@ blogsRouter.get('/', async (req:Request, res: Response) =>{
     const allBlogs: BlogsType[] = await allBlogsPromise
     res.status(HTTP_STATUS.OK_200).send(allBlogs)
 })
-blogsRouter.get('/:id', async (req: Request, res: Response) => {
+blogsRouter.get('/:id',
+    async (req: Request, res: Response) => {
         const blog = await blogsRepository.getBlogsById(req.params.id)
         if (blog){
             res.status(200).send(blog)
@@ -30,7 +31,6 @@ blogsRouter.post('/',
     ErrorMiddleware,
     async (req:Request, res: Response) =>{
     const newBlog = await blogsRepository.createNewBlogs(req.body.name, req.body.description, req.body.websiteUrl)
-        console.log(newBlog)
     res.status(HTTP_STATUS.CREATED_201).send(newBlog)
 })
 blogsRouter.put('/:id',

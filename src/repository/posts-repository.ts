@@ -11,6 +11,7 @@ export const postsRepository = {
     },
     async getPostsById(id: string):Promise<PostsType | null> {
         const findPosts = await dataPost.findOne({_id: new ObjectId(id)});
+        console.log(findPosts)
         if (!findPosts){
             return null
         }

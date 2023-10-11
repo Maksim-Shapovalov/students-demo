@@ -17,16 +17,20 @@ export const blogsRepository = {
     },
    async createNewBlogs(name:string, description: string, websiteUrl: string): Promise<BlogsType> {
         const newBlogs : BlogsType = {
+            id: new ObjectId().toString(),
             name: name,
             description: description,
             websiteUrl: websiteUrl,
             createdAt: new Date().toISOString(),
             isMembership: false
         }
-        await dataBlog.insertOne(newBlogs)
-        return newBlogs
+       // const result = await dataBlog.insertOne(newBlogs);
+       // newBlogs.id = result.insertedId.toString();
+       // await dataBlog.insertOne(newBlogs)
+       await dataBlog.insertOne(newBlogs)
+       return newBlogs
     },
-   async updateBlogById(id: string, name:string, description: string, websiteUrl: string) {
+   async updateBlogById(id: string, name:string, description: string, websiteUrl: string): Promise<boolean> {
        const res = await dataBlog.updateOne({_id: new ObjectId(id)}, {$set: {name,description, websiteUrl}})
        return res.matchedCount === 1
     },
