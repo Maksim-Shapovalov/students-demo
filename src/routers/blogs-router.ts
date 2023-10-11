@@ -38,8 +38,7 @@ blogsRouter.put('/:id',
     BlogsValidation(),
     ErrorMiddleware,
     async (req:Request, res: Response) => {
-    const {name, description, websiteUrl} = req.body
-    const result = await blogsRepository.updateBlogById(req.params.id, name,description,websiteUrl)
+    const result = await blogsRepository.updateBlogById(req.params.id, req.body.name,req.body.description,req.body.websiteUrl)
     if (!result){
         res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
        return
