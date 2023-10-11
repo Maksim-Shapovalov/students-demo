@@ -32,9 +32,6 @@ app.use("/posts", postsRouter)
 const startApp = async () => {
     await runDB()
     app.listen(port, () => {
-        console.log(new ObjectId())
-        console.log(randomUUID())
-        console.log( ObjectId.isValid ("6526f0df88665d1948827ae"))
         console.log(`Example app listening on port ${port}`)
     })
 }

@@ -20,10 +20,8 @@ blogsRouter.get('/:id',
         const blog = await blogsRepository.getBlogsById(req.params.id)
         if (blog){
             res.status(HTTP_STATUS.OK_200).send(blog)
-            return
         } else {
             res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
-            return
         }
 
 })

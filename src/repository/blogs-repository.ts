@@ -8,10 +8,10 @@ export const blogsRepository = {
         return res.map((b) => blogMapper(b))
 
     },
-    async getBlogsById(id:string): Promise<BlogsOutputModel | undefined>{
+    async getBlogsById(id:string): Promise<BlogsOutputModel | null>{
         const findCursor = await dataBlog.findOne({_id: new ObjectId(id)});
         if (!findCursor){
-            return undefined
+            return null
         }
         return blogMapper(findCursor)
     },
