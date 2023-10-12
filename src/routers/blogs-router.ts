@@ -15,15 +15,13 @@ blogsRouter.get('/', async (req:Request, res: Response) =>{
     const allBlogs = await blogsService.getAllBlogs();
     res.status(HTTP_STATUS.OK_200).send(allBlogs)
 })
-blogsRouter.get('/:id',
-    async (req: Request, res: Response) => {
+blogsRouter.get('/:id', async (req: Request, res: Response) => {
         const blog = await blogsService.getBlogsById(req.params.id)
-        if (!blog){
+        if (blog){
+            res.status(HTTP_STATUS.OK_200).send(blog)
+        }else {
             res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
-            return
         }
-        res.status(HTTP_STATUS.OK_200).send(blog)
-
 })
 blogsRouter.post('/',
     authGuardMiddleware,
