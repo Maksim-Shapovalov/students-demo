@@ -16,17 +16,7 @@ export const postsRepository = {
         return postMapper(findPosts)
     },
     async createNewPosts
-    (title:string,shortDescription:string,content:string,blogId:string): Promise<PostOutputModel> {
-        const findBlogName = await dataBlog.findOne({_id:new ObjectId(blogId)})
-        console.log(findBlogName)
-        const newPosts: PostsType  = {
-            title: title,
-            shortDescription: shortDescription,
-            content: content,
-            blogId: blogId,
-            blogName: findBlogName!.name,
-            createdAt: new Date().toISOString(),
-        }
+    (newPosts: PostsType): Promise<PostOutputModel> {
         const result = await dataPost.insertOne({...newPosts})
         return postMapper({...newPosts, _id: result.insertedId})
     },

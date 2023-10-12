@@ -15,17 +15,7 @@ export const blogsRepository = {
         }
         return blogMapper(findCursor)
     },
-   async createNewBlogs(name:string, description: string, websiteUrl: string): Promise<BlogsOutputModel> {
-        const newBlogs : BlogsType = {
-            name: name,
-            description: description,
-            websiteUrl: websiteUrl,
-            createdAt: new Date().toISOString(),
-            isMembership: false
-        }
-       // const result = await dataBlog.insertOne(newBlogs);
-       // newBlogs.id = result.insertedId.toString();
-       // await dataBlog.insertOne(newBlogs)
+   async createNewBlogs(newBlogs: BlogsType): Promise<BlogsOutputModel> {
        const res = await dataBlog.insertOne({...newBlogs})
        return blogMapper({...newBlogs, _id: res.insertedId})
     },
