@@ -15,8 +15,8 @@ export const postsRepository = {
         const result = await dataPost
             .find({})
             .sort(filter.sortDirection)
-            .limit(pageSizeInQuery)
             .skip(pageBlog)
+            .limit(pageSizeInQuery)
             .toArray()
         const items = result.map((p) => postMapper(p))
         return {
@@ -43,7 +43,7 @@ export const postsRepository = {
         }
 
         const pageSizeInQuery: number = filter.pageSize;
-        const totalCountBlogs = await dataBlog.countDocuments({})
+        const totalCountBlogs = await dataPost.countDocuments({})
 
         const pageCountBlogs: number = Math.ceil(totalCountBlogs / pageSizeInQuery)
         const pageBlog: number = ((filter.pageNumber - 1) * pageSizeInQuery)

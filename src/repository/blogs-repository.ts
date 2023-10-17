@@ -14,8 +14,8 @@ export const blogsRepository = {
         const res = await dataBlog
             .find({})
             .sort(filter.sortDirection)
-            .limit(pageSizeInQuery)
             .skip(pageBlog)
+            .limit(pageSizeInQuery)
             .toArray()
 
         const items = res.map((b) => blogMapper(b))
