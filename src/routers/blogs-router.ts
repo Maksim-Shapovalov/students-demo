@@ -39,8 +39,8 @@ blogsRouter.post('/:id/posts',
     PostsValidation(),
     ErrorMiddleware,
     async (req:Request, res: Response) =>{
-    const {title, shortDescription, content, blogId} = req.body
-    const newPost = await postsService.createNewPosts(title,shortDescription,content,blogId)
+    const {title, shortDescription, content} = req.body
+    const newPost = await postsService.createNewPostsInBlog(req.params.id,title,shortDescription,content)
     res.status(HTTP_STATUS.CREATED_201).send(newPost)
 })
 blogsRouter.post('/',
