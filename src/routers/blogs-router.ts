@@ -4,24 +4,43 @@ import {HTTP_STATUS} from "../index";
 import {authGuardMiddleware} from "../middleware/register-middleware";
 import {BlogsValidation} from "../middleware/input-middleware/blogs-validation";
 import {ErrorMiddleware} from "../middleware/error-middleware";
-import {BlogsOutputModel, BlogsType} from "../types/blogs-type";
-import {WithId} from "mongodb";
+import {blogsRepository} from "../repository/blogs-repository";
+import {postsRepository} from "../repository/posts-repository";
+import {queryFilter} from "../middleware/query-filter";
+import {postsService} from "../service-rep/service-posts";
 
 
 export const blogsRouter = Router()
 
-
-blogsRouter.get('/', async (req:Request, res: Response) =>{
-    const allBlogs = await blogsService.getAllBlogs();
+blogsRouter.get('/',
+    async (req:Request, res: Response) =>{
+    const filter = queryFilter(req.query);
+    const allBlogs = await blogsRepository.getAllBlogs(filter);
     res.status(HTTP_STATUS.OK_200).send(allBlogs)
 })
-blogsRouter.get('/:id', async (req: Request, res: Response) => {
-        const blog = await blogsService.getBlogsById(req.params.id)
+blogsRouter.get('/:id',
+    async (req: Request, res: Response) => {
+        const blog = await blogsRepository.getBlogsById(req.params.id)
         if (blog){
             res.status(HTTP_STATUS.OK_200).send(blog)
         }else {
             res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
         }
+})
+blogsRouter.get('/:id/posts',
+    async (req: Request, res: Response) => {
+    const filter = queryFilter(req.query);
+    const result = await postsRepository.getPostInBlogs(req.params.id, filter)
+    return res.send(result)
+})
+blogsRouter.post('/:id/posts',
+    authGuardMiddleware,
+    BlogsValidation(),
+    ErrorMiddleware,
+    async (req:Request, res: Response) =>{
+    const {title, shortDescription, content, blogId} = req.body
+    const newPost = await postsService.createNewPosts(title,shortDescription,content,blogId)
+    res.status(HTTP_STATUS.CREATED_201).send(newPost)
 })
 blogsRouter.post('/',
     authGuardMiddleware,
@@ -44,6 +63,7 @@ blogsRouter.put('/:id',
     }
 
 })
+
 blogsRouter.delete('/:id',
     authGuardMiddleware,
     async (req:Request, res: Response) => {

@@ -1,15 +1,13 @@
 import {BlogsOutputModel, BlogsType} from "../types/blogs-type";
 import {WithId} from "mongodb";
 import {blogsRepository} from '../repository/blogs-repository'
+import {PostOutputModel} from "../types/posts-type";
+import {dataPost} from "../DB/data-base";
+import {postMapper} from "../repository/posts-repository";
+import {blogsRouter} from "../routers/blogs-router";
+import {PaginationType} from "../repository/query-blogs-repository";
 
 export const blogsService = {
-    async getAllBlogs(): Promise<BlogsOutputModel[]>{
-        return blogsRepository.getAllBlogs()
-
-    },
-    async getBlogsById(id:string): Promise<BlogsOutputModel | undefined>{
-        return blogsRepository.getBlogsById(id)
-    },
     async createNewBlogs(name:string, description: string, websiteUrl: string): Promise<BlogsOutputModel> {
         const newBlogs : BlogsType = {
             name: name,

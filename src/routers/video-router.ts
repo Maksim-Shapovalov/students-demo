@@ -2,8 +2,8 @@ import {Request, Response, Router} from "express";
 import {dbVideos} from "../db-items/db-videos";
 import {HTTP_STATUS} from "../index";
 import {availableResolutionsEnum, VideoType} from "../types/video-type";
-import {ValidationErrorType} from "../validation/Error-validation";
-import {ValidationVideo} from "../validation/video-validation";
+import {ValidationErrorType} from "../middleware/input-middleware/validation/Error-validation";
+import {ValidationVideo} from "../middleware/input-middleware/validation/video-validation";
 
 
 
@@ -26,7 +26,6 @@ VideoRouter.get('/:id', (req: Request, res: Response) => {
 VideoRouter.post('/',
     ValidationVideo(),
     (req: Request, res: Response) => {
-    const nextDay = new Date()
     const {availableResolutions} = req.body
     const newVideo: VideoType = {
         id: +(new Date()),

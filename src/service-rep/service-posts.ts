@@ -4,12 +4,6 @@ import {ObjectId, WithId} from "mongodb";
 import {postsRepository} from "../repository/posts-repository";
 
 export const postsService = {
-    async getAllPosts(): Promise<PostOutputModel[]>{
-        return postsRepository.getAllPosts()
-    },
-    async getPostsById(id: string):Promise<PostOutputModel | null> {
-        return postsRepository.getPostsById(id)
-    },
     async createNewPosts
     (title:string,shortDescription:string,content:string,blogId:string): Promise<PostOutputModel> {
         const findBlogName = await dataBlog.findOne({_id:new ObjectId(blogId)})

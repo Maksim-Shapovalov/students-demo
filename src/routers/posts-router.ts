@@ -4,16 +4,17 @@ import {postsService} from "../service-rep/service-posts";
 import {PostsValidation} from "../middleware/input-middleware/posts-validation";
 import {ErrorMiddleware} from "../middleware/error-middleware";
 import {authGuardMiddleware} from "../middleware/register-middleware";
-import {PostsType} from "../types/posts-type";
+import {queryFilter} from "../middleware/query-filter";
+import {postsRepository} from "../repository/posts-repository";
 
 export const postsRouter = Router()
 postsRouter.get('/', async (req:Request, res: Response) =>{
-    const allPostsPromise: Promise<PostsType[]> = postsService.getAllPosts();
-    const allBlogs: PostsType[] = await allPostsPromise
-    res.send(allBlogs)
+    const filter = queryFilter(req.query);
+    const allPosts = postsRepository.getAllPosts(filter);
+    res.status(HTTP_STATUS.OK_200).send(allPosts)
 })
 postsRouter.get('/:id', async (req:Request, res: Response) =>{
-    let post = await postsService.getPostsById(req.params.id)
+    let post = await postsRepository.getPostsById(req.params.id)
     if (post){
         res.status(200).send(post)
     } else {

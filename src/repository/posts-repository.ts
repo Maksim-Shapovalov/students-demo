@@ -1,19 +1,68 @@
 import {PostOutputModel, PostsType} from "../types/posts-type";
 import {dataBlog, dataPost} from "../DB/data-base";
 import {ObjectId, WithId} from "mongodb";
+import {PaginationType} from "./query-blogs-repository";
+import {blogMapper, blogsRepository} from "./blogs-repository";
+import {PaginationQueryType} from "../middleware/query-filter";
 
 export const postsRepository = {
-    async getAllPosts(): Promise<PostOutputModel[]>{
-        const result = await dataPost.find({}).toArray();
-        return result.map((p) => postMapper(p))
+    async getAllPosts(filter:PaginationQueryType): Promise<PaginationType<PostOutputModel>>{
+        const pageSizeInQuery: number = filter.pageSize;
+        const totalCountBlogs = await dataPost.countDocuments({})
+
+        const pageCountBlogs: number = Math.ceil(totalCountBlogs / pageSizeInQuery)
+        const pageBlog: number = ((filter.pageNumber - 1) * pageSizeInQuery)
+        const result = await dataPost
+            .find({})
+            .sort(filter.sortDirection)
+            .limit(pageSizeInQuery)
+            .skip(pageBlog)
+            .toArray()
+        const items = result.map((p) => postMapper(p))
+        return {
+            pagesCount: pageCountBlogs,
+            page: pageBlog,
+            pageSize: pageSizeInQuery,
+            totalCount: totalCountBlogs,
+            items: items
+        }
     },
     async getPostsById(id: string):Promise<PostOutputModel | null> {
-        const findPosts = await dataPost.findOne({_id: new ObjectId(id)});
+        const findPosts = await dataPost
+            .findOne({_id: new ObjectId(id)});
         console.log(findPosts)
         if (!findPosts){
             return null
         }
         return postMapper(findPosts)
+    },
+    async getPostInBlogs(blogId: string, filter: PaginationQueryType): Promise<PaginationType<PostOutputModel> | null> {
+        const findBlog = await blogsRepository.getBlogsById(blogId)
+        if (!findBlog) {
+            return null
+        }
+
+        const pageSizeInQuery: number = filter.pageSize;
+        const totalCountBlogs = await dataBlog.countDocuments({})
+
+        const pageCountBlogs: number = Math.ceil(totalCountBlogs / pageSizeInQuery)
+        const pageBlog: number = ((filter.pageNumber - 1) * pageSizeInQuery)
+        const res = await dataPost
+            .find({blogId: findBlog.id})
+            .sort({[filter.sortBy]: filter.sortDirection})
+            .skip(pageBlog)
+            .limit(pageSizeInQuery)
+            .toArray()
+        console.log(res)
+        const items = res.map((p) => postMapper(p))
+        return {
+            pagesCount: pageCountBlogs,
+            page: pageBlog,
+            pageSize: pageSizeInQuery,
+            totalCount: totalCountBlogs,
+            items: items
+        }
+
     },
     async createNewPosts
     (newPosts: PostsType): Promise<PostOutputModel> {
@@ -33,7 +82,7 @@ export const postsRepository = {
 
 }
 
-const postMapper = (post: WithId<PostsType>): PostOutputModel => {
+export const postMapper = (post: WithId<PostsType>): PostOutputModel => {
     return {
         id: post._id.toString(),
         title: post.title,
