@@ -24,7 +24,8 @@ export const PostspParamsValidation = ()=>(
     ]
 )
 
-export const BlogIdValidation = ()=>(param('blogId')
+export const BlogIdValidation = ()=>(
+    param('blogId')
     .custom(async (value) => {
         console.log('this')
         const findBlog = await blogsRepository.getBlogsById(value)

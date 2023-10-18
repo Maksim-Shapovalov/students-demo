@@ -47,6 +47,7 @@ blogsRouter.post('/:blogId/posts',
     if (!newPost){
         res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
         return
+
     }
     res.status(HTTP_STATUS.CREATED_201).send(newPost)
 })
