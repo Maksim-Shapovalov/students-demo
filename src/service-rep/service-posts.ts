@@ -2,6 +2,7 @@ import {PostOutputModel, PostsType} from "../types/posts-type";
 import {dataBlog, dataPost} from "../DB/data-base";
 import {ObjectId, WithId} from "mongodb";
 import {postsRepository} from "../repository/posts-repository";
+import {blogsRepository} from "../repository/blogs-repository";
 
 export const postsService = {
     async createNewPosts
@@ -20,7 +21,7 @@ export const postsService = {
     },
     async createNewPostsInBlog
     (blogId: string,title :string,shortDescription:string,content:string): Promise<PostOutputModel> {
-        const findBlogName = await dataBlog.findOne({_id:new ObjectId(blogId)})
+        const findBlogName = await blogsRepository.getBlogsById(blogId)
         const newPosts: PostsType  = {
             title: title,
             shortDescription: shortDescription,
