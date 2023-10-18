@@ -1,3 +1,4 @@
+import {ifError} from "assert";
 
 
 export type PaginationQueryType = {
@@ -10,7 +11,18 @@ export type BlogsPaginationQueryType = PaginationQueryType & {
     searchNameTerm: string
 }
 
+export function searchNameInBlog(request: any): BlogsPaginationQueryType {
+    const defaultFilter: BlogsPaginationQueryType = {
+        searchNameTerm: '',
+        ...queryFilter(request)
+    }
 
+    if(request.searchNameTerm){
+        defaultFilter.searchNameTerm = request.searchNameTerm
+    }
+
+    return defaultFilter
+}
 export function queryFilter(query: any): PaginationQueryType {
     const defaultFilter: PaginationQueryType = {
         sortBy: 'createdAt',

@@ -6,7 +6,7 @@ import {BlogsValidation} from "../middleware/input-middleware/blogs-validation";
 import {ErrorMiddleware} from "../middleware/error-middleware";
 import {blogsRepository} from "../repository/blogs-repository";
 import {postsRepository} from "../repository/posts-repository";
-import {queryFilter} from "../middleware/query-filter";
+import {queryFilter, searchNameInBlog} from "../middleware/query-filter";
 import {postsService} from "../service-rep/service-posts";
 import {PostsValidation} from "../middleware/input-middleware/posts-validation";
 import {BlogIdValidation, PostspParamsValidation} from "../repository/query-posts-repository";
@@ -16,7 +16,7 @@ export const blogsRouter = Router()
 
 blogsRouter.get('/',
     async (req: Request, res: Response) => {
-        const filter = queryFilter(req.query);
+        const filter = searchNameInBlog(req.query);
         const allBlogs = await blogsRepository.getAllBlogs(filter);
         res.status(HTTP_STATUS.OK_200).send(allBlogs)
     })

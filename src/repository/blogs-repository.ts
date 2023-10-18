@@ -2,17 +2,19 @@ import {BlogsOutputModel, BlogsType} from "../types/blogs-type";
 import {dataBlog, dataPost} from "../DB/data-base";
 import {ObjectId, WithId} from "mongodb";
 import {PaginationType} from "./query-blogs-repository";
-import {PaginationQueryType} from "../middleware/query-filter";
+import {BlogsPaginationQueryType, PaginationQueryType} from "../middleware/query-filter";
 
 export const blogsRepository = {
-    async getAllBlogs(filter: PaginationQueryType): Promise<PaginationType<BlogsOutputModel>> {
+    async getAllBlogs(filter: BlogsPaginationQueryType): Promise<PaginationType<BlogsOutputModel>> {
+        const filterQuery = {name: {$regex: filter.searchNameTerm, $options: 'i'}}
+
         const pageSizeInQuery: number = filter.pageSize;
-        const totalCountBlogs = await dataBlog.countDocuments({})
+        const totalCountBlogs = await dataBlog.countDocuments(filterQuery)
 
         const pageCountBlogs: number = Math.ceil(totalCountBlogs / pageSizeInQuery)
         const pageBlog: number = ((filter.pageNumber - 1) * pageSizeInQuery)
         const res = await dataBlog
-            .find({})
+            .find(filterQuery)
             .sort({[filter.sortBy]: filter.sortDirection})
             .skip(pageBlog)
             .limit(pageSizeInQuery)
