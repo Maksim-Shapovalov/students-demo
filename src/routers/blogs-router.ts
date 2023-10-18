@@ -35,13 +35,13 @@ blogsRouter.get('/:id/posts',
     const result = await postsRepository.getPostInBlogs(req.params.id, filter)
     return res.send(result)
 })
-blogsRouter.post('/:id/posts',
+blogsRouter.post('/:blogId/posts',
     authGuardMiddleware,
     PostspParamsValidation(),
     ErrorMiddleware,
     async (req:Request, res: Response) =>{
     const {title, shortDescription, content} = req.body
-    const newPost = await postsService.createNewPostsInBlog(req.params.id,title,shortDescription,content)
+    const newPost = await postsService.createNewPostsInBlog(req.params.blogId,title,shortDescription,content)
     res.status(HTTP_STATUS.CREATED_201).send(newPost)
 })
 blogsRouter.post('/',
