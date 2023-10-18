@@ -33,6 +33,7 @@ blogsRouter.get('/:id/posts',
     async (req: Request, res: Response) => {
         const filter = queryFilter(req.query);
         const result = await postsRepository.getPostInBlogs(req.params.id, filter)
+        if(!result) return res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
         return res.send(result)
     })
 blogsRouter.post('/:blogId/posts',

@@ -57,7 +57,7 @@ export const blogsRepository = {
 }
 export const blogMapper = (blog: WithId<BlogsType>): BlogsOutputModel => {
     return {
-        id: blog._id.toString(),
+        id: blog._id.toHexString(),
         name: blog.name,
         description: blog.description,
         websiteUrl: blog.websiteUrl,
