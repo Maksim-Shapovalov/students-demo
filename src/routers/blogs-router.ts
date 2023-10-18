@@ -43,6 +43,7 @@ blogsRouter.post('/:blogId/posts',
     async (req:Request, res: Response) =>{
     const {title, shortDescription, content} = req.body
     const newPost = await postsService.createNewPostsInBlog(req.params.blogId,title,shortDescription,content)
+        console.log(newPost)
     if (!newPost){
         res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
         return
