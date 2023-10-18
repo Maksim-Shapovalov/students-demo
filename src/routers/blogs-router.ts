@@ -9,6 +9,7 @@ import {postsRepository} from "../repository/posts-repository";
 import {queryFilter} from "../middleware/query-filter";
 import {postsService} from "../service-rep/service-posts";
 import {PostsValidation} from "../middleware/input-middleware/posts-validation";
+import {PostspParamsValidation} from "../repository/query-posts-repository";
 
 
 export const blogsRouter = Router()
@@ -36,7 +37,7 @@ blogsRouter.get('/:id/posts',
 })
 blogsRouter.post('/:id/posts',
     authGuardMiddleware,
-    PostsValidation(),
+    PostspParamsValidation(),
     ErrorMiddleware,
     async (req:Request, res: Response) =>{
     const {title, shortDescription, content} = req.body
