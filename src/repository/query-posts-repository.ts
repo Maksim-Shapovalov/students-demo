@@ -30,7 +30,7 @@ export const BlogIdValidation = ()=>(param('blogId')
         const findBlog = await blogsRepository.getBlogsById(value)
         console.log('---------',findBlog,'-----------')
         if (!findBlog){
-            throw new Error('Blog not exist')
+            return false
             console.log('not blog')
         }
         return true
