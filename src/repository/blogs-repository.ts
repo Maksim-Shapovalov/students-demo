@@ -21,7 +21,7 @@ export const blogsRepository = {
         const items = res.map((b) => blogMapper(b))
         return {
             pagesCount: pageCountBlogs,
-            page: pageBlog,
+            page: filter.pageNumber,
             pageSize: pageSizeInQuery,
             totalCount: totalCountBlogs,
             items: items

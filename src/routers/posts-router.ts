@@ -10,7 +10,7 @@ import {postsRepository} from "../repository/posts-repository";
 export const postsRouter = Router()
 postsRouter.get('/', async (req:Request, res: Response) =>{
     const filter = queryFilter(req.query);
-    const allPosts = postsRepository.getAllPosts(filter);
+    const allPosts = await postsRepository.getAllPosts(filter);
     res.status(HTTP_STATUS.OK_200).send(allPosts)
 })
 postsRouter.get('/:id', async (req:Request, res: Response) =>{

@@ -21,7 +21,7 @@ export const postsRepository = {
         const items = result.map((p) => postMapper(p))
         return {
             pagesCount: pageCountBlogs,
-            page: pageBlog,
+            page: filter.pageNumber,
             pageSize: pageSizeInQuery,
             totalCount: totalCountBlogs,
             items: items
