@@ -14,7 +14,7 @@ export const postsRepository = {
         const pageBlog: number = ((filter.pageNumber - 1) * pageSizeInQuery)
         const result = await dataPost
             .find({})
-            .sort(filter.sortDirection)
+            .sort({[filter.sortBy]: filter.sortDirection})
             .skip(pageBlog)
             .limit(pageSizeInQuery)
             .toArray()

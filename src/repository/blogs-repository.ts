@@ -13,7 +13,7 @@ export const blogsRepository = {
         const pageBlog: number = ((filter.pageNumber - 1) * pageSizeInQuery)
         const res = await dataBlog
             .find({})
-            .sort(filter.sortDirection)
+            .sort({[filter.sortBy]: filter.sortDirection})
             .skip(pageBlog)
             .limit(pageSizeInQuery)
             .toArray()
