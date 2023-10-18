@@ -16,7 +16,7 @@ export const postsService = {
             shortDescription: shortDescription,
             content: content,
             blogId: blogId,
-            blogName: findBlogName!.name,
+            blogName: findBlogName.name,
             createdAt: new Date().toISOString(),
         }
         const result = await postsRepository.createNewPosts(newPosts)

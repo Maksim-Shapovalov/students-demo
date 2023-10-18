@@ -15,67 +15,64 @@ import {BlogIdValidation, PostspParamsValidation} from "../repository/query-post
 export const blogsRouter = Router()
 
 blogsRouter.get('/',
-    async (req:Request, res: Response) =>{
-    const filter = queryFilter(req.query);
-    const allBlogs = await blogsRepository.getAllBlogs(filter);
-    res.status(HTTP_STATUS.OK_200).send(allBlogs)
-})
+    async (req: Request, res: Response) => {
+        const filter = queryFilter(req.query);
+        const allBlogs = await blogsRepository.getAllBlogs(filter);
+        res.status(HTTP_STATUS.OK_200).send(allBlogs)
+    })
 blogsRouter.get('/:id',
     async (req: Request, res: Response) => {
         const blog = await blogsRepository.getBlogsById(req.params.id)
-        if (blog){
+        if (blog) {
             res.status(HTTP_STATUS.OK_200).send(blog)
-        }else {
+        } else {
             res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
         }
-})
+    })
 blogsRouter.get('/:id/posts',
     async (req: Request, res: Response) => {
-    const filter = queryFilter(req.query);
-    const result = await postsRepository.getPostInBlogs(req.params.id, filter)
-    return res.send(result)
-})
+        const filter = queryFilter(req.query);
+        const result = await postsRepository.getPostInBlogs(req.params.id, filter)
+        return res.send(result)
+    })
 blogsRouter.post('/:blogId/posts',
     authGuardMiddleware,
     PostspParamsValidation(),
     ErrorMiddleware,
-    async (req:Request, res: Response) =>{
-    const {title, shortDescription, content} = req.body
-    const newPost = await postsService.createNewPosts(title,shortDescription,content,req.params.blogId)
-
-        console.log(newPost)
-    if (!newPost){
-        res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
-        return
-
-    }
-    res.status(HTTP_STATUS.CREATED_201).send(newPost)
-})
+    async (req: Request, res: Response) => {
+        const {title, shortDescription, content} = req.body
+        const newPost = await postsService.createNewPosts(title, shortDescription, content, req.params.blogId)
+        if (!newPost) {
+            res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
+            return
+        }
+        res.status(HTTP_STATUS.CREATED_201).send(newPost)
+    })
 blogsRouter.post('/',
     authGuardMiddleware,
     BlogsValidation(),
     ErrorMiddleware,
-    async (req:Request, res: Response) =>{
-    const newBlog = await blogsService.createNewBlogs(req.body.name, req.body.description, req.body.websiteUrl)
-    res.status(HTTP_STATUS.CREATED_201).send(newBlog)
-})
+    async (req: Request, res: Response) => {
+        const newBlog = await blogsService.createNewBlogs(req.body.name, req.body.description, req.body.websiteUrl)
+        res.status(HTTP_STATUS.CREATED_201).send(newBlog)
+    })
 blogsRouter.put('/:id',
     authGuardMiddleware,
     BlogsValidation(),
     ErrorMiddleware,
-    async (req:Request, res: Response) => {
-    const result = await blogsService.updateBlogById(req.params.id, req.body.name,req.body.description,req.body.websiteUrl)
-    if (!result){
-        res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
-    }else {
-        res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
-    }
+    async (req: Request, res: Response) => {
+        const result = await blogsService.updateBlogById(req.params.id, req.body.name, req.body.description, req.body.websiteUrl)
+        if (!result) {
+            res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
+        } else {
+            res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
+        }
 
-})
+    })
 
 blogsRouter.delete('/:id',
     authGuardMiddleware,
-    async (req:Request, res: Response) => {
+    async (req: Request, res: Response) => {
         const deleted = await blogsService.deleteBlogsById(req.params.id)
 
         if (!deleted) {
@@ -84,5 +81,5 @@ blogsRouter.delete('/:id',
         }
 
         res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
-})
+    })
 

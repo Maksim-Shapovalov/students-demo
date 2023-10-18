@@ -42,13 +42,17 @@ export const postsRepository = {
             return null
         }
 
+        const filterQuery = {blogId: findBlog.id}
+
+
         const pageSizeInQuery: number = filter.pageSize;
-        const totalCountBlogs = await dataPost.countDocuments({})
+        const totalCountBlogs = await dataPost.countDocuments(filterQuery)
 
         const pageCountBlogs: number = Math.ceil(totalCountBlogs / pageSizeInQuery)
         const pageBlog: number = ((filter.pageNumber - 1) * pageSizeInQuery)
+
         const res = await dataPost
-            .find({blogId: findBlog.id})
+            .find(filterQuery)
             .sort({[filter.sortBy]: filter.sortDirection})
             .skip(pageBlog)
             .limit(pageSizeInQuery)
