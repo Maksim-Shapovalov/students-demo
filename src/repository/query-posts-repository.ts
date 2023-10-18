@@ -21,17 +21,21 @@ export const PostspParamsValidation = ()=>(
             .isLength({min:1,max:1000})
             .notEmpty()
             .withMessage('Invalid content'),
-        param('blogId')
-            .custom(async (value) => {
-                const findBlog = await blogsRepository.getBlogsById(value)
-                if (!findBlog){
-                    throw new Error('Blog not exist')
-                }
-                return true
-            })
-            .notEmpty()
-            .trim()
-            .isString()
-            .withMessage('Invalid blogId')
     ]
 )
+
+export const BlogIdValidation = ()=>(param('blogId')
+    .custom(async (value) => {
+        console.log('this')
+        const findBlog = await blogsRepository.getBlogsById(value)
+        console.log('---------',findBlog,'-----------')
+        if (!findBlog){
+            throw new Error('Blog not exist')
+            console.log('not blog')
+        }
+        return true
+    })
+    .notEmpty()
+    .trim()
+    .isString()
+    .withMessage('Invalid blogId'))

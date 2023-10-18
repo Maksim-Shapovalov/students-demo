@@ -20,7 +20,7 @@ export const postsService = {
         return result
     },
     async createNewPostsInBlog
-    (blogId: string,title :string,shortDescription:string,content:string): Promise<PostOutputModel> {
+    (blogId:string, title :string, shortDescription:string, content:string): Promise<PostOutputModel> {
         const findBlogName = await blogsRepository.getBlogsById(blogId)
         const newPosts: PostsType  = {
             title: title,
