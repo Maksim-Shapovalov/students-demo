@@ -38,11 +38,11 @@ blogsRouter.get('/:id/posts',
 blogsRouter.post('/:blogId/posts',
     authGuardMiddleware,
     PostspParamsValidation(),
-    BlogIdValidation(),
     ErrorMiddleware,
     async (req:Request, res: Response) =>{
     const {title, shortDescription, content} = req.body
-    const newPost = await postsService.createNewPostsInBlog(req.params.blogId,title,shortDescription,content)
+    const newPost = await postsService.createNewPosts(title,shortDescription,content,req.params.blogId)
+
         console.log(newPost)
     if (!newPost){
         res.sendStatus(HTTP_STATUS.NOT_FOUND_404)

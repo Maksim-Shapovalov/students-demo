@@ -29,6 +29,7 @@ export const blogsRepository = {
     },
 
     async getBlogsById(id: string): Promise<BlogsOutputModel | null> {
+        if (!ObjectId.isValid(id)) return null
         const findCursor = await dataBlog.findOne({_id: new ObjectId(id)});
         if (!findCursor) return null
         return blogMapper(findCursor)

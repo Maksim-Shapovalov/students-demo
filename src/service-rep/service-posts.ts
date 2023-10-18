@@ -6,22 +6,11 @@ import {blogsRepository} from "../repository/blogs-repository";
 
 export const postsService = {
     async createNewPosts
-    (title:string,shortDescription:string,content:string,blogId:string): Promise<PostOutputModel> {
-        const findBlogName = await dataBlog.findOne({_id:new ObjectId(blogId)})
-        const newPosts: PostsType  = {
-            title: title,
-            shortDescription: shortDescription,
-            content: content,
-            blogId: blogId,
-            blogName: findBlogName!.name,
-            createdAt: new Date().toISOString(),
-        }
-        const result = await postsRepository.createNewPosts(newPosts)
-        return result
-    },
-    async createNewPostsInBlog
-    (blogId:string, title :string, shortDescription:string, content:string): Promise<PostOutputModel> {
+    (title:string,shortDescription:string,content:string,blogId:string): Promise<PostOutputModel | null> {
         const findBlogName = await blogsRepository.getBlogsById(blogId)
+        if (!findBlogName){
+            return null
+        }
         const newPosts: PostsType  = {
             title: title,
             shortDescription: shortDescription,
