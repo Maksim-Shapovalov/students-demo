@@ -4,7 +4,7 @@ import {UserDbType, UserOutputModel} from "../types/user-type";
 import {ObjectId, WithId} from "mongodb";
 
 export const userRepository = {
-    async getAllUsers(filter:UserPaginationQueryType): Promise<PaginationType<UserOutputModel>>{
+    async getAllUsers(filter:UserPaginationQueryType): Promise<PaginationType<UserOutputModel> | null>{
         const pageSizeInQuery: number = filter.pageSize;
         const totalCountBlogs = await dataPost.countDocuments({})
 

@@ -27,7 +27,7 @@ app.use("/videos", VideoRouter)
 app.use("/testing/all-data", AllDataClear)
 app.use("/blogs", blogsRouter)
 app.use("/posts", postsRouter)
-app.use("/user", userRouter)
+app.use("/users", userRouter)
 app.use("/auth", authRouter)
 
 
