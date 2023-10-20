@@ -13,6 +13,7 @@
     "@types/bcrypt": "^5.0.1",
     "@types/jest": "^29.5.5",
     "@types/supertest": "^2.0.14",
+    "bcrypt-ts": "^4.0.1",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "express-validator": "^7.0.1",

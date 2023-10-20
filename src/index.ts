@@ -30,7 +30,7 @@ app.use("/testing/all-data", AllDataClear)
 app.use("/blogs", blogsRouter)
 app.use("/posts", postsRouter)
 app.use("/user", userRouter)
-app.use("/auth/login", authRouter)
+app.use("/auth", authRouter)
 
 
 const startApp = async () => {
