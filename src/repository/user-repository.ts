@@ -11,9 +11,9 @@ export const userRepository = {
             ]}
 
         const pageSizeInQuery: number = filter.pageSize;
-        const totalCountBlogs = await dataPost.countDocuments({})
+        const totalCountUsers = await dataUser.countDocuments({})
 
-        const pageCountBlogs: number = Math.ceil(totalCountBlogs / pageSizeInQuery)
+        const pageCountUsers: number = Math.ceil(totalCountUsers / pageSizeInQuery)
         const pageBlog: number = ((filter.pageNumber - 1) * pageSizeInQuery)
         const result = await dataUser
             .find(filterQuery)
@@ -23,10 +23,10 @@ export const userRepository = {
             .toArray()
         const items = result.map((u) => userMapper(u))
         return {
-            pagesCount: pageCountBlogs,
+            pagesCount: pageCountUsers,
             page: filter.pageNumber,
             pageSize: pageSizeInQuery,
-            totalCount: totalCountBlogs,
+            totalCount: totalCountUsers,
             items: items
         }
     },
