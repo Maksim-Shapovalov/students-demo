@@ -13,7 +13,7 @@ export const userRepository = {
         const pageCountBlogs: number = Math.ceil(totalCountBlogs / pageSizeInQuery)
         const pageBlog: number = ((filter.pageNumber - 1) * pageSizeInQuery)
         const result = await dataUser
-            .find({})
+            .find({filterQuery})
             .sort({[filter.sortBy]: filter.sortDirection})
             .skip(pageBlog)
             .limit(pageSizeInQuery)
