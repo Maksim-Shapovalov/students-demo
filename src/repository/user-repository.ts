@@ -5,6 +5,8 @@ import {ObjectId, WithId} from "mongodb";
 
 export const userRepository = {
     async getAllUsers(filter:UserPaginationQueryType): Promise<PaginationType<UserOutputModel> | null>{
+        const filterQuery = {$or: [{login: {$regex:filter.searchLoginTerm, $options: 'i'}}, {email: {$regex: filter.searchEmailTerm, $options: 'i'}}]}
+
         const pageSizeInQuery: number = filter.pageSize;
         const totalCountBlogs = await dataPost.countDocuments({})
 
