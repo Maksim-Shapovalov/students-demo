@@ -87,7 +87,7 @@ export const postsRepository = {
 
 export const postMapper = (post: WithId<PostsType>): PostOutputModel => {
     return {
-        id: post._id.toString(),
+        id: post._id.toHexString(),
         title: post.title,
         shortDescription: post.shortDescription,
         content: post.content,
