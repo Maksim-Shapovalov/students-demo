@@ -8,6 +8,7 @@ export const postsService = {
     async createNewPosts
     (title:string,shortDescription:string,content:string,blogId:string): Promise<PostOutputModel | null> {
         const findBlogName = await blogsRepository.getBlogsById(blogId)
+        console.log(findBlogName)
         if (!findBlogName){
             return null
         }
