@@ -1,9 +1,9 @@
 import {Request, Response, Router} from "express";
-import {dbVideos} from "../db-items/db-videos";
-import {HTTP_STATUS} from "../index";
-import {availableResolutionsEnum, VideoType} from "../types/video-type";
-import {ValidationErrorType} from "../middleware/input-middleware/validation/Error-validation";
-import {ValidationVideo} from "../middleware/input-middleware/validation/video-validation";
+import {dbVideos} from "../../db-items/db-videos";
+import {HTTP_STATUS} from "../../index";
+import {availableResolutionsEnum, VideoType} from "../../types/video-type";
+import {ValidationErrorType} from "../../middleware/input-middleware/validation/Error-validation";
+import {ValidationVideo} from "../../middleware/input-middleware/validation/video-validation";
 
 
 

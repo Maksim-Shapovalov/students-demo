@@ -1,15 +1,15 @@
 import {Request, Response, Router} from "express";
-import {blogsService} from "../service-rep/service-blogs";
-import {HTTP_STATUS} from "../index";
-import {authGuardMiddleware} from "../middleware/register-middleware";
-import {BlogsValidation} from "../middleware/input-middleware/blogs-validation";
-import {ErrorMiddleware} from "../middleware/error-middleware";
-import {blogsRepository} from "../repository/blogs-repository";
-import {postsRepository} from "../repository/posts-repository";
-import {queryFilter, searchNameInBlog} from "../middleware/query-filter";
-import {postsService} from "../service-rep/service-posts";
-import {PostsValidation} from "../middleware/input-middleware/posts-validation";
-import {BlogIdValidation, PostspParamsValidation} from "../repository/query-posts-repository";
+import {blogsService} from "../../service-rep/service-blogs";
+import {HTTP_STATUS} from "../../index";
+import {authGuardMiddleware} from "../../middleware/register-middleware";
+import {BlogsValidation} from "../../middleware/input-middleware/blogs-validation";
+import {ErrorMiddleware} from "../../middleware/error-middleware";
+import {blogsRepository} from "../../repository/blogs-repository";
+import {postsRepository} from "../../repository/posts-repository";
+import {queryFilter, searchNameInBlog} from "../../repository/qurey-repo/query-filter";
+import {postsService} from "../../service-rep/service-posts";
+import {PostsValidation} from "../../middleware/input-middleware/posts-validation";
+import {BlogIdValidation, PostspParamsValidation} from "../../repository/qurey-repo/query-posts-repository";
 
 
 export const blogsRouter = Router()

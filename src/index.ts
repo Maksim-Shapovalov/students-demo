@@ -1,11 +1,13 @@
 import express from 'express'
-import {VideoRouter} from "./routers/video-router";
+import {VideoRouter} from "./routers/videos/video-router";
 import {AllDataClear} from "./routers/all-data-clear";
-import {blogsRouter} from "./routers/blogs-router";
-import {postsRouter} from "./routers/posts-router";
+import {blogsRouter} from "./routers/blogs&posts/blogs-router";
+import {postsRouter} from "./routers/blogs&posts/posts-router";
 import {runDB} from "./DB/data-base";
 import {randomUUID} from "node:crypto";
 import {ObjectId} from "mongodb";
+import {userRouter} from "./routers/user&auth/User-router";
+import {authRouter} from "./routers/user&auth/auth-router";
 
 
 export const app = express()
@@ -27,6 +29,8 @@ app.use("/videos", VideoRouter)
 app.use("/testing/all-data", AllDataClear)
 app.use("/blogs", blogsRouter)
 app.use("/posts", postsRouter)
+app.use("/user", userRouter)
+app.use("/auth/login", authRouter)
 
 
 const startApp = async () => {

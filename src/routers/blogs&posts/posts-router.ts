@@ -1,11 +1,11 @@
 import {Request, Response, Router} from "express";
-import {HTTP_STATUS} from "../index";
-import {postsService} from "../service-rep/service-posts";
-import {PostsValidation} from "../middleware/input-middleware/posts-validation";
-import {ErrorMiddleware} from "../middleware/error-middleware";
-import {authGuardMiddleware} from "../middleware/register-middleware";
-import {queryFilter} from "../middleware/query-filter";
-import {postsRepository} from "../repository/posts-repository";
+import {HTTP_STATUS} from "../../index";
+import {postsService} from "../../service-rep/service-posts";
+import {PostsValidation} from "../../middleware/input-middleware/posts-validation";
+import {ErrorMiddleware} from "../../middleware/error-middleware";
+import {authGuardMiddleware} from "../../middleware/register-middleware";
+import {queryFilter} from "../../repository/qurey-repo/query-filter";
+import {postsRepository} from "../../repository/posts-repository";
 
 export const postsRouter = Router()
 postsRouter.get('/', async (req:Request, res: Response) =>{

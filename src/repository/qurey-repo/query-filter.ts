@@ -1,6 +1,3 @@
-import {ifError} from "assert";
-
-
 export type PaginationQueryType = {
     sortBy: string
     sortDirection: 'desc' | 'asc'
@@ -9,6 +6,25 @@ export type PaginationQueryType = {
 }
 export type BlogsPaginationQueryType = PaginationQueryType & {
     searchNameTerm: string
+}
+export type UserPaginationQueryType = PaginationQueryType & {
+    searchLoginTerm: string
+    searchEmailTerm: string
+}
+
+export function searchLogAndEmailInUsers(queryLog: any ): UserPaginationQueryType{
+    const defaultFilter: UserPaginationQueryType = {
+        searchEmailTerm: '',
+        searchLoginTerm: '',
+        ...queryFilter(queryLog)
+    }
+    if (queryLog.searchEmailTerm){
+        defaultFilter.searchEmailTerm = queryLog.searchEmailTerm
+    }
+    if (queryLog.searchLoginTerm) {
+        defaultFilter.searchLoginTerm = queryLog.searchLoginTerm
+    }
+    return defaultFilter
 }
 
 export function searchNameInBlog(request: any): BlogsPaginationQueryType {
@@ -45,4 +61,14 @@ export function queryFilter(query: any): PaginationQueryType {
     }
 
     return defaultFilter
+}
+
+
+
+export type PaginationType<I> = {
+    pagesCount: number
+    page: number
+    pageSize: number
+    totalCount: number
+    items: I[]
 }

@@ -1,5 +1,5 @@
 import {body, param} from "express-validator";
-import {blogsRepository} from "./blogs-repository";
+import {blogsRepository} from "../blogs-repository";
 
 export const PostspParamsValidation = ()=>(
     [

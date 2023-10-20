@@ -1,9 +1,8 @@
 import {PostOutputModel, PostsType} from "../types/posts-type";
 import {dataBlog, dataPost} from "../DB/data-base";
 import {ObjectId, WithId} from "mongodb";
-import {PaginationType} from "./query-blogs-repository";
 import {blogMapper, blogsRepository} from "./blogs-repository";
-import {PaginationQueryType} from "../middleware/query-filter";
+import {PaginationQueryType, PaginationType} from "./qurey-repo/query-filter";
 
 export const postsRepository = {
     async getAllPosts(filter:PaginationQueryType): Promise<PaginationType<PostOutputModel>>{
