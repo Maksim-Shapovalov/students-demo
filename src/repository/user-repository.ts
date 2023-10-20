@@ -1,6 +1,6 @@
 import { PaginationType, UserPaginationQueryType} from "./qurey-repo/query-filter";
 import {dataPost, dataUser} from "../DB/data-base";
-import {UserDbType, UserOutputModel} from "../types/user-type";
+import {UserDbType, UserOutputModel, UserToPostsDBModel, UserToPostsOutputModel} from "../types/user-type";
 import {ObjectId, WithId} from "mongodb";
 
 export const userRepository = {
@@ -34,9 +34,9 @@ export const userRepository = {
         const findUser = await dataUser.findOne({ $or: [{login: loginOrEmail}, {email: loginOrEmail}]})
         return findUser
     },
-    async getNewUser(newUser: UserDbType): Promise<UserOutputModel>{
+    async getNewUser(newUser: UserDbType): Promise<UserToPostsOutputModel>{
         const result = await dataUser.insertOne({...newUser})
-        return userMapper({...newUser, _id: result.insertedId})
+        return userToPostMapper({...newUser, _id: result.insertedId})
     },
     async deleteUserById(userId:string): Promise<boolean>{
         const findUser = await dataUser.deleteOne({_id:new ObjectId(userId)})
@@ -51,6 +51,16 @@ export const userMapper = (user: WithId<UserDbType>): UserOutputModel => {
         email: user.email,
         passwordHash: user.passwordHash,
         passwordSalt: user.passwordSalt,
+        createdAt: user.createdAt
+    }
+}
+export const userToPostMapper = (user: WithId<UserToPostsDBModel>): UserToPostsOutputModel => {
+    return {
+        id: user._id.toHexString(),
+        login: user.login,
+        email: user.email,
+        // passwordHash: user.passwordHash,
+        // passwordSalt: user.passwordSalt,
         createdAt: user.createdAt
     }
 }

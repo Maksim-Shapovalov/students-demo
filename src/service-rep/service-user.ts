@@ -1,9 +1,9 @@
-import {UserDbType, UserOutputModel} from "../types/user-type";
+import {UserDbType, UserOutputModel, UserToPostsDBModel} from "../types/user-type";
 import {userRepository} from "../repository/user-repository";
 import bcrypt ,{hash, compare} from "bcrypt"
 
 export const serviceUser = {
-    async getNewUser(login: string, password: string, email: string): Promise<UserOutputModel> {
+    async getNewUser(login: string, password: string, email: string): Promise<UserToPostsDBModel> {
 
         const passwordSalt = await bcrypt.genSalt(10)
         const passwordHash = await this._generateHash(password, passwordSalt)
@@ -15,6 +15,11 @@ export const serviceUser = {
             passwordSalt: passwordSalt,
             createdAt: new Date().toISOString()
         }
+        // const infoUserToPost = {
+        //     login: newUser.login,
+        //     email: newUser.email,
+        //     createdAt: newUser.createdAt
+        // }
         const result = userRepository.getNewUser(newUser)
         return result
     },
