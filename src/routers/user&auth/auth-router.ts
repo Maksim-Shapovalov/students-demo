@@ -8,7 +8,7 @@ export const authRouter = Router()
 authRouter.post("/login", async (req: Request ,res:Response)=>{
     const user = await serviceUser.checkCredentials(req.body.loginOrEmail, req.body.password)
     if (!user){
-        res.sendStatus(HTTP_STATUS.BAD_REQUEST_400)
+        res.sendStatus(HTTP_STATUS.UNAUTHORIZED_401)
         return
     }
     res.status(HTTP_STATUS.NO_CONTENT_204).send(user)

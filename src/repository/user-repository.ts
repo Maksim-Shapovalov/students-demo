@@ -4,7 +4,7 @@ import {UserDbType, UserOutputModel, UserToPostsDBModel, UserToPostsOutputModel}
 import {ObjectId, WithId} from "mongodb";
 
 export const userRepository = {
-    async getAllUsers(filter:UserPaginationQueryType): Promise<PaginationType<UserOutputModel> | null>{
+    async getAllUsers(filter:UserPaginationQueryType): Promise<PaginationType<UserToPostsOutputModel> | null>{
         const filterQuery = {$or: [
             {login: {$regex:filter.searchLoginTerm, $options: 'i'}},
                 {email: {$regex: filter.searchEmailTerm, $options: 'i'}}
@@ -21,7 +21,7 @@ export const userRepository = {
             .skip(pageBlog)
             .limit(pageSizeInQuery)
             .toArray()
-        const items = result.map((u) => userMapper(u))
+        const items = result.map((u) => userToPostMapper(u))
         return {
             pagesCount: pageCountUsers,
             page: filter.pageNumber,
