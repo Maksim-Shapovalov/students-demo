@@ -9,22 +9,23 @@ import {authGuardMiddleware} from "../../middleware/register-middleware";
 
 export const userRouter = Router()
 
-userRouter.get("/", async (res: Response, req: Request) => {
+userRouter.get("/", async (req: Request, res: Response) => {
     const filter = searchLogAndEmailInUsers(req.query)
     const result = await userRepository.getAllUsers(filter)
+    console.log(result)
     res.send(result)
 })
 userRouter.post("/",
     authGuardMiddleware,
     UserValidation(),
-    async (res: Response, req: Request)=> {
-    const {login, password, email} = req.body
-    const result = await serviceUser.getNewUser(login, password, email)
+    async (req: Request, res: Response)=> {
+    const result = await serviceUser.getNewUser(req.body.login, req.body.password, req.body.email)
+        console.log(result)
     res.status(HTTP_STATUS.CREATED_201).send(result)
 })
 userRouter.delete("/:id",
     authGuardMiddleware,
-    async (res: Response, req: Request)=> {
+    async (req: Request, res: Response)=> {
     const deletedUs = await serviceUser.deleteUserById(req.params.id)
     if (!deletedUs){
         res.sendStatus(HTTP_STATUS.NOT_FOUND_404)

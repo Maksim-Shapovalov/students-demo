@@ -5,7 +5,10 @@ import {ObjectId, WithId} from "mongodb";
 
 export const userRepository = {
     async getAllUsers(filter:UserPaginationQueryType): Promise<PaginationType<UserOutputModel> | null>{
-        const filterQuery = {$or: [{login: {$regex:filter.searchLoginTerm, $options: 'i'}}, {email: {$regex: filter.searchEmailTerm, $options: 'i'}}]}
+        const filterQuery = {$or: [
+            {login: {$regex:filter.searchLoginTerm, $options: 'i'}},
+                {email: {$regex: filter.searchEmailTerm, $options: 'i'}}
+            ]}
 
         const pageSizeInQuery: number = filter.pageSize;
         const totalCountBlogs = await dataPost.countDocuments({})
@@ -13,7 +16,7 @@ export const userRepository = {
         const pageCountBlogs: number = Math.ceil(totalCountBlogs / pageSizeInQuery)
         const pageBlog: number = ((filter.pageNumber - 1) * pageSizeInQuery)
         const result = await dataUser
-            .find({filterQuery})
+            .find(filterQuery)
             .sort({[filter.sortBy]: filter.sortDirection})
             .skip(pageBlog)
             .limit(pageSizeInQuery)
