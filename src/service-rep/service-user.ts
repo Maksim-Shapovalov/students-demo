@@ -1,12 +1,12 @@
 import {UserDbType, UserOutputModel} from "../types/user-type";
 import {userRepository} from "../repository/user-repository";
-import {genSalt, hash} from "bcrypt"
+import bcrypt ,{hash, compare} from "bcrypt"
 
 export const serviceUser = {
     async getNewUser(login: string, password: string, email: string): Promise<UserOutputModel> {
 
-        const passwordSalt = await genSalt(10)
-        const passwordHash = await hash(password, passwordSalt)
+        const passwordSalt = await bcrypt.genSalt(10)
+        const passwordHash = await this._generateHash(password, passwordSalt)
 
         const newUser: UserDbType = {
             login,
@@ -22,13 +22,13 @@ export const serviceUser = {
         return await userRepository.deleteUserById(userId)
     },
     async _generateHash(password: string, salt: string) {
-        const hashPassword = await hash(password, salt)
-        return hashPassword
+        const hash = await bcrypt.hash(password, salt)
+        return hash
     },
     async checkCredentials(loginOrEmail: string, password: string){
         const user = await userRepository.findByLoginOrEmail(loginOrEmail)
         if (!user) return false
-        const passwordHash = await hash(password, user.passwordSalt)
+        const passwordHash = await this._generateHash(password, user.passwordSalt)
         if (user.passwordHash !== passwordHash) {
             return false
         }
