@@ -45,7 +45,6 @@ postsRouter.post("/:postId/comments", authMiddleware, async (req:Request, res: R
     res.send(result)
 })
 postsRouter.post('/',
-    authMiddleware,
     //authGuardMiddleware,
     PostsValidation(),
     ErrorMiddleware,
@@ -55,7 +54,7 @@ postsRouter.post('/',
     res.status(HTTP_STATUS.CREATED_201).send(newBlogs)
 })
 postsRouter.put('/:id',
-    authMiddleware,
+    authGuardMiddleware,
     PostsValidation(),
     ErrorMiddleware,
     async (req: Request, res: Response) => {
@@ -68,7 +67,7 @@ postsRouter.put('/:id',
         }
     })
 postsRouter.delete('/:id',
-    authMiddleware,
+    authGuardMiddleware,
     async (req: Request, res: Response) => {
         const deleted = await postsService.deletePostsById(req.params.id)
 

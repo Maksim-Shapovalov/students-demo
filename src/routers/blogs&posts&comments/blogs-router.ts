@@ -10,7 +10,6 @@ import {queryFilter, searchNameInBlog} from "../../repository/qurey-repo/query-f
 import {postsService} from "../../service-rep/service-posts";
 import {PostsValidation} from "../../middleware/input-middleware/posts-validation";
 import {BlogIdValidation, PostspParamsValidation} from "../../repository/qurey-repo/query-posts-repository";
-import {authMiddleware} from "../../middleware/auth-middleware";
 
 
 export const blogsRouter = Router()
@@ -38,8 +37,7 @@ blogsRouter.get('/:id/posts',
         return res.send(result)
     })
 blogsRouter.post('/:blogId/posts',
-    authMiddleware,
-    //authGuardMiddleware,
+    authGuardMiddleware,
     PostspParamsValidation(),
     ErrorMiddleware,
     async (req: Request, res: Response) => {
@@ -52,8 +50,7 @@ blogsRouter.post('/:blogId/posts',
         res.status(HTTP_STATUS.CREATED_201).send(newPost)
     })
 blogsRouter.post('/',
-    //authGuardMiddleware,
-    authMiddleware,
+    authGuardMiddleware,
     BlogsValidation(),
     ErrorMiddleware,
     async (req: Request, res: Response) => {
@@ -61,7 +58,7 @@ blogsRouter.post('/',
         res.status(HTTP_STATUS.CREATED_201).send(newBlog)
     })
 blogsRouter.put('/:id',
-    authMiddleware,
+    authGuardMiddleware,
     BlogsValidation(),
     ErrorMiddleware,
     async (req: Request, res: Response) => {
@@ -75,7 +72,7 @@ blogsRouter.put('/:id',
     })
 
 blogsRouter.delete('/:id',
-    authMiddleware,
+    authGuardMiddleware,
     async (req: Request, res: Response) => {
         const deleted = await blogsService.deleteBlogsById(req.params.id)
 
