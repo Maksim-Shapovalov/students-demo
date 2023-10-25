@@ -8,8 +8,7 @@ import {blogsRepository} from "../../repository/blogs-repository";
 import {postsRepository} from "../../repository/posts-repository";
 import {queryFilter, searchNameInBlog} from "../../repository/qurey-repo/query-filter";
 import {postsService} from "../../service-rep/service-posts";
-import {PostsValidation} from "../../middleware/input-middleware/posts-validation";
-import {BlogIdValidation, PostspParamsValidation} from "../../repository/qurey-repo/query-posts-repository";
+import { PostspParamsValidation} from "../../repository/qurey-repo/query-posts-repository";
 
 
 export const blogsRouter = Router()

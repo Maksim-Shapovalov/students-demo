@@ -1,6 +1,4 @@
 import {PostOutputModel, PostsType} from "../types/posts-type";
-import {dataBlog, dataPost} from "../DB/data-base";
-import {ObjectId, WithId} from "mongodb";
 import {postsRepository} from "../repository/posts-repository";
 import {blogsRepository} from "../repository/blogs-repository";
 
@@ -29,19 +27,6 @@ export const postsService = {
     },
     async deletePostsById(id: string): Promise<boolean>{
         return await postsRepository.deletePostsById(id)
-
     }
 
-}
-
-const postMapper = (post: WithId<PostsType>): PostOutputModel => {
-    return {
-        id: post._id.toString(),
-        title: post.title,
-        shortDescription: post.shortDescription,
-        content: post.content,
-        blogId: post.blogId,
-        blogName: post.blogName,
-        createdAt: post.createdAt
-    }
 }
