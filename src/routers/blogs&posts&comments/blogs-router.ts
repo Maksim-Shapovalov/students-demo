@@ -10,6 +10,7 @@ import {queryFilter, searchNameInBlog} from "../../repository/qurey-repo/query-f
 import {postsService} from "../../service-rep/service-posts";
 import {PostsValidation} from "../../middleware/input-middleware/posts-validation";
 import {BlogIdValidation, PostspParamsValidation} from "../../repository/qurey-repo/query-posts-repository";
+import {authMiddleware} from "../../middleware/auth-middleware";
 
 
 export const blogsRouter = Router()
@@ -50,7 +51,7 @@ blogsRouter.post('/:blogId/posts',
         res.status(HTTP_STATUS.CREATED_201).send(newPost)
     })
 blogsRouter.post('/',
-    authGuardMiddleware,
+    authMiddleware,
     BlogsValidation(),
     ErrorMiddleware,
     async (req: Request, res: Response) => {
