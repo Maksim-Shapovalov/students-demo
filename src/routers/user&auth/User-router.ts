@@ -18,7 +18,7 @@ userRouter.get("/", async (req: Request, res: Response) => {
     res.send(result)
 })
 userRouter.post("/",
-    authMiddleware,
+    // authMiddleware,
     UserValidation(),
     ErrorMiddleware,
     async (req: Request, res: Response)=> {
