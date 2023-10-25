@@ -10,7 +10,9 @@ import {ErrorMiddleware} from "../../middleware/error-middleware";
 
 export const userRouter = Router()
 
-userRouter.get("/", async (req: Request, res: Response) => {
+userRouter.get("/",
+    authGuardMiddleware ,
+    async (req: Request, res: Response) => {
     const filter = searchLogAndEmailInUsers(req.query)
     const result = await userRepository.getAllUsers(filter)
     console.log(result)

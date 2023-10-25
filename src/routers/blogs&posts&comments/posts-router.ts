@@ -10,6 +10,7 @@ import {commentsRepository} from "../../repository/comments-repository";
 import {serviceUser} from "../../service-rep/service-user";
 import {serviceComments} from "../../service-rep/service-comments";
 import {authMiddleware} from "../../middleware/auth-middleware";
+import {CommentValidation} from "../../middleware/input-middleware/comment-validation";
 
 export const postsRouter = Router()
 postsRouter.get('/', async (req:Request, res: Response) =>{
@@ -25,7 +26,9 @@ postsRouter.get('/:id', async (req:Request, res: Response) =>{
         res.sendStatus(404)
     }
 })
-postsRouter.get("/:postId/comments", async (req:Request, res: Response)=> {
+postsRouter.get("/:postId/comments",
+    authMiddleware,
+    async (req:Request, res: Response)=> {
     const filter = queryFilter(req.query)
     const result = await commentsRepository.getCommentsInPost(req.params.postId ,filter)
     if (!result){
@@ -34,7 +37,10 @@ postsRouter.get("/:postId/comments", async (req:Request, res: Response)=> {
     }
     res.status(HTTP_STATUS.OK_200).send(result)
 })
-postsRouter.post("/:postId/comments", authMiddleware, async (req:Request, res: Response) => {
+postsRouter.post("/:postId/comments",
+    authMiddleware,
+    CommentValidation,
+    async (req:Request, res: Response) => {
     const result = serviceComments.createdNewComments(req.params.postId, req.body.content, req.body.user)
 
     if(!result){
@@ -45,7 +51,7 @@ postsRouter.post("/:postId/comments", authMiddleware, async (req:Request, res: R
     res.send(result)
 })
 postsRouter.post('/',
-    //authGuardMiddleware,
+    authGuardMiddleware,
     PostsValidation(),
     ErrorMiddleware,
     async (req:Request, res: Response) =>{
