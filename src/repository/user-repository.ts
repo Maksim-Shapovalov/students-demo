@@ -30,6 +30,10 @@ export const userRepository = {
             items: items
         }
     },
+    async getUserById(id:ObjectId){
+        const findUser = await dataUser.findOne({_id: id})
+        return findUser
+    },
     async findByLoginOrEmail(loginOrEmail: string){
         const findUser = await dataUser.findOne({ $or: [{login: loginOrEmail}, {email: loginOrEmail}]})
         return findUser

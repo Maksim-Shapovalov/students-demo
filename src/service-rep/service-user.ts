@@ -15,11 +15,6 @@ export const serviceUser = {
             passwordSalt: passwordSalt,
             createdAt: new Date().toISOString()
         }
-        // const infoUserToPost = {
-        //     login: newUser.login,
-        //     email: newUser.email,
-        //     createdAt: newUser.createdAt
-        // }
         const result = userRepository.getNewUser(newUser)
         return result
     },
@@ -37,6 +32,6 @@ export const serviceUser = {
         if (user.passwordHash !== passwordHash) {
             return false
         }
-        return true
+        return user
     }
 }

@@ -1,5 +1,5 @@
 import {BlogsOutputModel, BlogsType} from "../types/blogs-type";
-import {dataBlog, dataPost} from "../DB/data-base";
+import {dataBlog} from "../DB/data-base";
 import {ObjectId, WithId} from "mongodb";
 import {BlogsPaginationQueryType, PaginationType} from "./qurey-repo/query-filter";
 
@@ -66,3 +66,6 @@ export const blogMapper = (blog: WithId<BlogsType>): BlogsOutputModel => {
         isMembership: blog.isMembership
     }
 }
+
+
+//TODO: Сделать ендпоинт консол лог objectID и toHEXString , проверить разницу и изменения.

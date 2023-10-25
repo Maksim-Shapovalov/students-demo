@@ -1,10 +1,6 @@
 import {BlogsOutputModel, BlogsType} from "../types/blogs-type";
 import {WithId} from "mongodb";
 import {blogsRepository} from '../repository/blogs-repository'
-import {PostOutputModel} from "../types/posts-type";
-import {dataPost} from "../DB/data-base";
-import {postMapper} from "../repository/posts-repository";
-import {blogsRouter} from "../routers/blogs&posts/blogs-router";
 
 export const blogsService = {
     async createNewBlogs(name:string, description: string, websiteUrl: string): Promise<BlogsOutputModel> {

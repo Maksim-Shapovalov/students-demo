@@ -37,7 +37,7 @@ blogsRouter.get('/:id/posts',
         return res.send(result)
     })
 blogsRouter.post('/:blogId/posts',
-    authGuardMiddleware,
+    //authGuardMiddleware,
     PostspParamsValidation(),
     ErrorMiddleware,
     async (req: Request, res: Response) => {
@@ -50,7 +50,7 @@ blogsRouter.post('/:blogId/posts',
         res.status(HTTP_STATUS.CREATED_201).send(newPost)
     })
 blogsRouter.post('/',
-    authGuardMiddleware,
+    //authGuardMiddleware,
     BlogsValidation(),
     ErrorMiddleware,
     async (req: Request, res: Response) => {

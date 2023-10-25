@@ -6,6 +6,10 @@ import {ErrorMiddleware} from "../../middleware/error-middleware";
 import {authGuardMiddleware} from "../../middleware/register-middleware";
 import {queryFilter} from "../../repository/qurey-repo/query-filter";
 import {postsRepository} from "../../repository/posts-repository";
+import {commentsRepository} from "../../repository/comments-repository";
+import {serviceUser} from "../../service-rep/service-user";
+import {serviceComments} from "../../service-rep/service-comments";
+import {authMiddleware} from "../../middleware/auth-middleware";
 
 export const postsRouter = Router()
 postsRouter.get('/', async (req:Request, res: Response) =>{
@@ -21,8 +25,27 @@ postsRouter.get('/:id', async (req:Request, res: Response) =>{
         res.sendStatus(404)
     }
 })
+postsRouter.get("/:postId/comments", async (req:Request, res: Response)=> {
+    const filter = queryFilter(req.query)
+    const result = await commentsRepository.getCommentsInPost(req.params.postId ,filter)
+    if (!result){
+        res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
+        return
+    }
+    res.status(HTTP_STATUS.OK_200).send(result)
+})
+postsRouter.post("/:postId/comments", authMiddleware, async (req:Request, res: Response) => {
+    const result = serviceComments.createdNewComments(req.params.postId, req.body.content, req.body.user)
+
+    if(!result){
+        res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
+        return
+    }
+
+    res.send(result)
+})
 postsRouter.post('/',
-    authGuardMiddleware,
+    //authGuardMiddleware,
     PostsValidation(),
     ErrorMiddleware,
     async (req:Request, res: Response) =>{
