@@ -39,7 +39,7 @@ postsRouter.get("/:postId/comments",
 })
 postsRouter.post("/:postId/comments",
     authMiddleware,
-    CommentValidation,
+    CommentValidation(),
     async (req:Request, res: Response) => {
     const result = serviceComments.createdNewComments(req.params.postId, req.body.content, req.body.user)
 
