@@ -6,6 +6,7 @@ import {HTTP_STATUS} from "../../index";
 import {UserValidation} from "../../middleware/input-middleware/user-validation";
 import {authGuardMiddleware} from "../../middleware/register-middleware";
 import {ErrorMiddleware} from "../../middleware/error-middleware";
+import {authMiddleware} from "../../middleware/auth-middleware";
 
 
 export const userRouter = Router()
@@ -17,7 +18,7 @@ userRouter.get("/", async (req: Request, res: Response) => {
     res.send(result)
 })
 userRouter.post("/",
-    authGuardMiddleware,
+    authMiddleware,
     UserValidation(),
     ErrorMiddleware,
     async (req: Request, res: Response)=> {
@@ -26,7 +27,7 @@ userRouter.post("/",
     res.status(HTTP_STATUS.CREATED_201).send(result)
 })
 userRouter.delete("/:id",
-    authGuardMiddleware,
+    authMiddleware,
     async (req: Request, res: Response)=> {
     const deletedUs = await serviceUser.deleteUserById(req.params.id)
     if (!deletedUs){
