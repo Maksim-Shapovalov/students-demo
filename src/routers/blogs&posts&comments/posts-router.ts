@@ -27,7 +27,6 @@ postsRouter.get('/:id', async (req:Request, res: Response) =>{
     }
 })
 postsRouter.get("/:postId/comments",
-    authMiddleware,
     async (req:Request, res: Response)=> {
     const filter = queryFilter(req.query)
     const result = await commentsRepository.getCommentsInPost(req.params.postId ,filter)
