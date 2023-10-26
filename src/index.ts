@@ -20,6 +20,7 @@ export const HTTP_STATUS = {
     NO_CONTENT_204: 204,
     BAD_REQUEST_400: 400,
     UNAUTHORIZED_401: 401,
+    Forbidden_403: 403,
     NOT_FOUND_404: 404
 }
 

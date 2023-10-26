@@ -6,7 +6,7 @@ import {postsRepository} from "../repository/posts-repository";
 
 export const serviceComments = {
     async createdNewComments (postId:string, content:string, user: WithId<UserDbType>): Promise<CommentsOutputType | null>{
-        const post = postsRepository.getPostsById(postId);
+        const post = await postsRepository.getPostsById(postId);
 
         if(!post){
             return null;

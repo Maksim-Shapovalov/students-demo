@@ -46,7 +46,7 @@ postsRouter.post("/:postId/comments",
         res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
         return
     }
-        console.log("-------------------------------------",result )
+
     res.status(HTTP_STATUS.CREATED_201).send(result)
 })
 postsRouter.post('/',
