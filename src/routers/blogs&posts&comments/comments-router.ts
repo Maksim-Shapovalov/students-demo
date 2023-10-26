@@ -23,6 +23,7 @@ commentsRouter.put("/:commentId",
     const updateComment = await serviceComments.updateComment(req.params.commentId, req.body.content)
     if (!updateComment){
         res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
+        return
     }
     res.sendStatus(HTTP_STATUS.OK_200)
 })
