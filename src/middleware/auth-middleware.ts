@@ -5,7 +5,7 @@ import {userRepository} from "../repository/user-repository";
 
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     const registr = req.headers.authorization
-    if (!registr || registr?.startsWith('Basic')){
+    if (!registr || !registr.startsWith('Bearer')){
         res.send(HTTP_STATUS.UNAUTHORIZED_401)
         return
     }
