@@ -8,11 +8,11 @@ import {authMiddleware} from "../../middleware/auth-middleware";
 import {CommentValidation} from "../../middleware/input-middleware/comment-validation";
 
 export const commentsRouter = Router();
-
 commentsRouter.get("/:id",async (req:Request, res:Response)=> {
     const findComments = await commentsRepository.getCommentById(req.params.id)
     if (!findComments){
         res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
+        return
     }
     res.status(HTTP_STATUS.OK_200).send(findComments)
 })
@@ -32,6 +32,7 @@ commentsRouter.delete("/:commentId",
     const deletedComment = await serviceComments.deletedComment(req.params.commentId)
     if (!deletedComment) {
         res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
+        return
     }
     res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
 })

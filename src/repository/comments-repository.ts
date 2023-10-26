@@ -1,13 +1,13 @@
 import { dataComments} from "../DB/data-base";
 import {ObjectId, WithId} from "mongodb";
-import {commentsOutputType, CommentsTypeDb} from "../types/comment-type";
+import {CommentsOutputType, CommentsTypeDb} from "../types/comment-type";
 import {PaginationQueryType, PaginationType} from "./qurey-repo/query-filter";
 import {postsRepository} from "./posts-repository";
 
 
 
 export const commentsRepository = {
-    async getCommentsInPost(postId: string, filter: PaginationQueryType): Promise<PaginationType<commentsOutputType> | null> {
+    async getCommentsInPost(postId: string, filter: PaginationQueryType): Promise<PaginationType<CommentsOutputType> | null> {
         const findPost = await postsRepository.getPostsById(postId)
 
         if (!findPost){
@@ -39,7 +39,7 @@ export const commentsRepository = {
             items: items
         }
     },
-    async createdNewComments (newComment: CommentsTypeDb): Promise<commentsOutputType | null>{
+    async createdNewComments (newComment: CommentsTypeDb): Promise<CommentsOutputType | null>{
         const res = await dataComments.insertOne({...newComment})
 
         if(!res || !res?.insertedId){
@@ -48,12 +48,13 @@ export const commentsRepository = {
 
         return commentsMapper({...newComment, _id: res.insertedId})
     },
-    async getCommentById (commentId:string): Promise<CommentsTypeDb | null> {
+    async getCommentById (commentId:string): Promise<CommentsOutputType | null> {
+        if (!ObjectId.isValid(commentId)) return null
         const findComments = await dataComments.findOne({_id: new ObjectId(commentId)})
         if (!findComments){
             return null
         }
-        return findComments
+        return commentsMapper(findComments)
     },
     async updateCommentsByCommentId (commentId: string, content: string): Promise<boolean>{
         const updateComment = await dataComments.updateOne({_id: new ObjectId(commentId)}, {
@@ -69,7 +70,7 @@ export const commentsRepository = {
     }
 }
 
-export const commentsMapper = (comment: WithId<CommentsTypeDb>):commentsOutputType =>{
+export const commentsMapper = (comment: WithId<CommentsTypeDb>):CommentsOutputType =>{
     return {
         id: comment._id.toHexString(),
         content: comment.content,

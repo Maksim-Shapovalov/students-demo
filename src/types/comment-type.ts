@@ -8,7 +8,7 @@ export type CommentsTypeDb = {
     "createdAt": string
 }
 
-export type commentsOutputType = {
+export type CommentsOutputType = {
     id: string
     content: string
     commentatorInfo: {

@@ -1,11 +1,11 @@
 import {commentsRepository} from "../repository/comments-repository";
-import {commentsOutputType, CommentsTypeDb} from "../types/comment-type";
+import {CommentsOutputType, CommentsTypeDb} from "../types/comment-type";
 import {WithId} from "mongodb";
 import {UserDbType} from "../types/user-type";
 import {postsRepository} from "../repository/posts-repository";
 
 export const serviceComments = {
-    async createdNewComments (postId:string, content:string, user: WithId<UserDbType>): Promise<commentsOutputType | null>{
+    async createdNewComments (postId:string, content:string, user: WithId<UserDbType>): Promise<CommentsOutputType | null>{
         const post = postsRepository.getPostsById(postId);
 
         if(!post){
