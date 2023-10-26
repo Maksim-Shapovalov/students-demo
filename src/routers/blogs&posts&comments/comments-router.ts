@@ -14,7 +14,7 @@ commentsRouter.get("/:id",async (req:Request, res:Response)=> {
         res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
         return
     }
-    res.status(HTTP_STATUS.OK_200).send({findComments})
+    res.status(HTTP_STATUS.OK_200).send(findComments)
 })
 commentsRouter.put("/:commentId",
     authMiddleware,

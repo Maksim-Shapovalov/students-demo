@@ -59,7 +59,7 @@ export const commentsRepository = {
     async updateCommentsByCommentId (commentId: string, content: string): Promise<boolean>{
         const updateComment = await dataComments.updateOne({_id: new ObjectId(commentId)}, {
             $set: {
-                content: content
+                content
             }
         })
         return updateComment.matchedCount === 1
