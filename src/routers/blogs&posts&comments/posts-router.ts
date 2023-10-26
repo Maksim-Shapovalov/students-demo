@@ -41,13 +41,13 @@ postsRouter.post("/:postId/comments",
     authMiddleware,
     CommentValidation(),
     async (req:Request, res: Response) => {
-    const result = serviceComments.createdNewComments(req.params.postId, req.body.content, req.body.user)
+    const result = await serviceComments.createdNewComments(req.params.postId, req.body.content, req.body.user)
 
     if(!result){
         res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
         return
     }
-
+        console.log("-------------------------------------",result )
     res.send(result)
 })
 postsRouter.post('/',

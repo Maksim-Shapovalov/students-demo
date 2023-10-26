@@ -21,8 +21,9 @@ export const serviceComments = {
             postId: postId,
             createdAt: new Date().toISOString()
         }
-
-        return await commentsRepository.createdNewComments(newComment)
+        const res = await commentsRepository.createdNewComments(newComment)
+        console.log(res)
+        return res
     },
     async updateComment (commentId: string, content: string) {
         return await commentsRepository.updateCommentsByCommentId(commentId, content)
