@@ -56,7 +56,6 @@ export const postsRepository = {
             .skip(pageBlog)
             .limit(pageSizeInQuery)
             .toArray()
-        console.log(res)
         const items = res.map((p) => postMapper(p))
         return {
             pagesCount: pageCountBlogs,
