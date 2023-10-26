@@ -48,7 +48,7 @@ postsRouter.post("/:postId/comments",
         return
     }
         console.log("-------------------------------------",result )
-    res.send(result)
+    res.status(HTTP_STATUS.CREATED_201).send(result)
 })
 postsRouter.post('/',
     authGuardMiddleware,

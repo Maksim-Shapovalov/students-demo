@@ -25,7 +25,7 @@ commentsRouter.put("/:commentId",
         res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
         return
     }
-    res.sendStatus(HTTP_STATUS.OK_200)
+    res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
 })
 commentsRouter.delete("/:commentId",
     authMiddleware,
