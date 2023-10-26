@@ -4,12 +4,13 @@ import {jwtService} from "../application/jwt-service";
 import {userRepository} from "../repository/user-repository";
 
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
-    if (!req.headers.authorization){
+    const registr = req.headers.authorization
+    if (!registr || registr?.startsWith('Basic')){
         res.send(HTTP_STATUS.UNAUTHORIZED_401)
         return
     }
 
-    const token = req.headers.authorization.split(' ')[1]
+    const token = registr.split(' ')[1]
 
     const userId = await jwtService.getUserIdByToken(token)
 
