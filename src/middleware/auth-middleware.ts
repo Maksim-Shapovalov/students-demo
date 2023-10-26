@@ -12,9 +12,6 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
     const token = req.headers.authorization.split(' ')[1]
 
     const userId = await jwtService.getUserIdByToken(token)
-    if (req.headers.authorization != token){
-        res.sendStatus(HTTP_STATUS.Forbidden_403)
-    }
 
 
     if (userId){
@@ -26,5 +23,5 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
         }
     }
 
-    res.sendStatus(HTTP_STATUS.UNAUTHORIZED_401)
+    res.sendStatus(HTTP_STATUS.Forbidden_403)
 }
