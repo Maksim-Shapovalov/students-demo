@@ -1,6 +1,4 @@
 import {Router, Request, Response} from "express";
-import {dataComments} from "../../DB/data-base";
-import {ObjectId} from "mongodb";
 import {commentsRepository} from "../../repository/comments-repository";
 import {HTTP_STATUS} from "../../index";
 import {serviceComments} from "../../service-rep/service-comments";
@@ -21,6 +19,10 @@ commentsRouter.put("/:commentId",
     CommentValidation(),
     async (req:Request, res:Response) => {
     const updateComment = await serviceComments.updateComment(req.params.commentId, req.body.content)
+    const userId = await commentsRepository.getCommentById(req.params.commentId)
+        if (userId?.commentatorInfo.userId != req.headers.authorization){
+            res.sendStatus(HTTP_STATUS.Forbidden_403)
+        }
     if (!updateComment){
         res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
         return

@@ -5,7 +5,7 @@ import {userRepository} from "../repository/user-repository";
 
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     const registr = req.headers.authorization
-    if (!registr || !registr.startsWith('Bearer')){
+    if (!registr){
         res.send(HTTP_STATUS.UNAUTHORIZED_401)
         return
     }
@@ -24,5 +24,5 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
         }
     }
 
-    res.sendStatus(HTTP_STATUS.Forbidden_403)
+    res.sendStatus(HTTP_STATUS.UNAUTHORIZED_401)
 }
