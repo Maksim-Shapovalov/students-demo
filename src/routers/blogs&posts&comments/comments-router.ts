@@ -4,6 +4,7 @@ import {HTTP_STATUS} from "../../index";
 import {serviceComments} from "../../service-rep/service-comments";
 import {authMiddleware} from "../../middleware/auth-middleware";
 import {CommentValidation} from "../../middleware/input-middleware/comment-validation";
+import {ErrorMiddleware} from "../../middleware/error-middleware";
 
 export const commentsRouter = Router();
 commentsRouter.get("/:id",async (req:Request, res:Response)=> {
@@ -17,6 +18,7 @@ commentsRouter.get("/:id",async (req:Request, res:Response)=> {
 commentsRouter.put("/:commentId",
     authMiddleware,
     CommentValidation(),
+    ErrorMiddleware,
     async (req:Request, res:Response) => {
     const user = req.body.user
     const comment = await commentsRepository.getCommentById(req.params.commentId)

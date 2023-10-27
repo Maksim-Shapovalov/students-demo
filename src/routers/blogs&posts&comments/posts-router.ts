@@ -39,6 +39,7 @@ postsRouter.get("/:postId/comments",
 postsRouter.post("/:postId/comments",
     authMiddleware,
     CommentValidation(),
+    ErrorMiddleware,
     async (req:Request, res: Response) => {
     const result = await serviceComments.createdNewComments(req.params.postId, req.body.content, req.body.user)
 
