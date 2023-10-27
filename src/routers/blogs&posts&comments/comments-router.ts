@@ -19,11 +19,8 @@ commentsRouter.put("/:commentId",
     CommentValidation(),
     async (req:Request, res:Response) => {
     const user = req.body.user
-        const comment = await commentsRepository.getCommentById(req.params.commentId)
-        if (comment?.commentatorInfo.userId != user._id.toString()){
-            res.sendStatus(HTTP_STATUS.Forbidden_403)
-            return
-        }
+    const comment = await commentsRepository.getCommentById(req.params.commentId)
+
     const updateComment = await serviceComments.updateComment(req.params.commentId, req.body.content)
 
 
@@ -31,22 +28,27 @@ commentsRouter.put("/:commentId",
         res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
         return
     }
+    if (comment?.commentatorInfo.userId != user._id.toString()){
+         res.sendStatus(HTTP_STATUS.Forbidden_403)
+         return
+        }
     res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
 })
 commentsRouter.delete("/:commentId",
     authMiddleware,
     async (req:Request, res:Response) => {
     const user = req.body.user
-        const comment = await commentsRepository.getCommentById(req.params.commentId)
-        if (comment?.commentatorInfo.userId != user._id.toString()){
-            res.sendStatus(HTTP_STATUS.Forbidden_403)
-            return
-        }
+    const comment = await commentsRepository.getCommentById(req.params.commentId)
+
     const deletedComment = await serviceComments.deletedComment(req.params.commentId)
 
     if (!deletedComment) {
         res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
         return
     }
+    if (comment?.commentatorInfo.userId != user._id.toString()){
+         res.sendStatus(HTTP_STATUS.Forbidden_403)
+         return
+        }
     res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
 })
