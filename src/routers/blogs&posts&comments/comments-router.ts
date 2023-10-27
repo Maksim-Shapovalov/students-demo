@@ -22,6 +22,7 @@ commentsRouter.put("/:commentId",
         const comment = await commentsRepository.getCommentById(req.params.commentId)
         if (comment?.commentatorInfo.userId != user._id.toString()){
             res.sendStatus(HTTP_STATUS.Forbidden_403)
+            return
         }
     const updateComment = await serviceComments.updateComment(req.params.commentId, req.body.content)
 
@@ -39,6 +40,7 @@ commentsRouter.delete("/:commentId",
         const comment = await commentsRepository.getCommentById(req.params.commentId)
         if (comment?.commentatorInfo.userId != user._id.toString()){
             res.sendStatus(HTTP_STATUS.Forbidden_403)
+            return
         }
     const deletedComment = await serviceComments.deletedComment(req.params.commentId)
 
