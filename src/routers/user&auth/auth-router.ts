@@ -33,11 +33,6 @@ authRouter.post("/registration-confirmation",
 authRouter.post("/registration",
     AuthValidation(),
     async (req: Request ,res:Response) => {
-    const findUser = await userRepository.findByEmailOrPassword(req.body.email, req.body.password)
-        if (findUser){
-            res.sendStatus(HTTP_STATUS.BAD_REQUEST_400)
-            return
-        }
     const user = await serviceUser.getNewUser(req.body.login,req.body.password, req.body.email)
     await authService.doOperation(user)
     res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
