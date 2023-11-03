@@ -2,7 +2,7 @@ import {Request, Response, Router} from "express";
 import {serviceUser} from "../../service-rep/service-user";
 import {HTTP_STATUS} from "../../index";
 import {jwtService} from "../../application/jwt-service";
-import {userMapper} from "../../repository/user-repository";
+import {userMapper, userRepository} from "../../repository/user-repository";
 import {authMiddleware, CheckingAuthorizationValidationCode} from "../../middleware/auth-middleware";
 import {authService} from "../../domain/auth-service";
 import {AuthValidation, AuthValidationEmail} from "../../middleware/input-middleware/validation/auth-validation";
@@ -33,6 +33,11 @@ authRouter.post("/registration-confirmation",
 authRouter.post("/registration",
     AuthValidation(),
     async (req: Request ,res:Response) => {
+    const findUser = await userRepository.findByEmailOrPassword(req.body.email, req.body.password)
+        if (findUser){
+            res.sendStatus(HTTP_STATUS.BAD_REQUEST_400)
+            return
+        }
     const user = await serviceUser.getNewUser(req.body.login,req.body.password, req.body.email)
     await authService.doOperation(user)
     res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
