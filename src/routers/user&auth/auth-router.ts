@@ -6,6 +6,7 @@ import {userMapper, userRepository} from "../../repository/user-repository";
 import {authMiddleware, CheckingAuthorizationValidationCode} from "../../middleware/auth-middleware";
 import {authService} from "../../domain/auth-service";
 import {AuthValidation, AuthValidationEmail} from "../../middleware/input-middleware/validation/auth-validation";
+import {ErrorMiddleware} from "../../middleware/error-middleware";
 
 export const authRouter = Router()
 
@@ -22,6 +23,7 @@ authRouter.post("/login", async (req: Request ,res:Response)=>{
 
 authRouter.post("/registration-confirmation",
     CheckingAuthorizationValidationCode(),
+    ErrorMiddleware,
     async (req: Request ,res:Response) => {
     const result = await authService.confirmatorUser(req.body.code)
         if (!result){
@@ -32,6 +34,7 @@ authRouter.post("/registration-confirmation",
 })
 authRouter.post("/registration",
     AuthValidation(),
+    ErrorMiddleware,
     async (req: Request ,res:Response) => {
     const user = await serviceUser.getNewUser(req.body.login,req.body.password, req.body.email)
     await authService.doOperation(user)
@@ -39,6 +42,7 @@ authRouter.post("/registration",
 })
 authRouter.post("/registration-email-resending",
     AuthValidationEmail(),
+    ErrorMiddleware,
     async (req: Request ,res:Response) => {
     const user = await authService.findUserByEmail(req.body.email)
         if (!user) {
