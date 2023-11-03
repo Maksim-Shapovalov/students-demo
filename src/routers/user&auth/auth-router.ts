@@ -5,6 +5,7 @@ import {jwtService} from "../../application/jwt-service";
 import {userMapper} from "../../repository/user-repository";
 import {authMiddleware, CheckingauthorizationvalidationCode} from "../../middleware/auth-middleware";
 import {authService} from "../../domain/auth-service";
+import {AuthValidation, AuthValidationEmail} from "../../middleware/input-middleware/validation/auth-validation";
 
 export const authRouter = Router()
 
@@ -29,12 +30,16 @@ authRouter.post("/registration-confirmation",
         }
     res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
 })
-authRouter.post("/registration", async (req: Request ,res:Response) => {
+authRouter.post("/registration",
+    CheckingauthorizationvalidationCode,
+    AuthValidation,
+    async (req: Request ,res:Response) => {
    const user = await serviceUser.getNewUser(req.body.login,req.body.password, req.body.email)
         await authService.doOperation(user)
-    res.send(user)
+    res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
 })
 authRouter.post("/registration-email-resending",
+    AuthValidationEmail,
     async (req: Request ,res:Response) => {
     const user = await authService.findUserByEmail(req.body.email)
         if (!user) {
@@ -44,7 +49,6 @@ authRouter.post("/registration-email-resending",
         await authService.doOperation(user)
     res.send(200)
         //ToDo: create service to router
-
 })
 authRouter.get("/me",
     authMiddleware ,
