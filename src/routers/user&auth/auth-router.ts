@@ -32,10 +32,10 @@ authRouter.post("/registration-confirmation",
 })
 authRouter.post("/registration",
     AuthValidation(),
-    CheckingauthorizationvalidationCode,
+    CheckingauthorizationvalidationCode(),
     async (req: Request ,res:Response) => {
-   const user = await serviceUser.getNewUser(req.body.login,req.body.password, req.body.email)
-        await authService.doOperation(user)
+    const user = await serviceUser.getNewUser(req.body.login,req.body.password, req.body.email)
+    await authService.doOperation(user)
     res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
 })
 authRouter.post("/registration-email-resending",
