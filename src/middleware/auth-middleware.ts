@@ -35,6 +35,7 @@ export const CheckingAuthorizationValidationCode = () => ([
             if (!codeUsers)throw new Error('user not found')
             if (codeUsers.emailConfirmation.isConfirmed)throw new Error('user not found')
             if (codeUsers.emailConfirmation.expirationDate < new Date().toISOString())throw new Error('user not found')
+            if (codeUsers.emailConfirmation.confirmationCode !== value) throw new Error('user not found')
             console.log(codeUsers, 'CheckingAuthorizationValidationCode')
             return true
         })

@@ -46,7 +46,7 @@ authRouter.post("/registration-email-resending",
             return
         }
         await authService.doOperation(user)
-    res.send(200)
+    res.send(HTTP_STATUS.NO_CONTENT_204)
         //ToDo: create service to router
 })
 authRouter.get("/me",
