@@ -31,15 +31,15 @@ authRouter.post("/registration-confirmation",
     res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
 })
 authRouter.post("/registration",
-    CheckingauthorizationvalidationCode,
-    AuthValidation,
+    CheckingauthorizationvalidationCode(),
+    AuthValidation(),
     async (req: Request ,res:Response) => {
    const user = await serviceUser.getNewUser(req.body.login,req.body.password, req.body.email)
         await authService.doOperation(user)
     res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
 })
 authRouter.post("/registration-email-resending",
-    AuthValidationEmail,
+    AuthValidationEmail(),
     async (req: Request ,res:Response) => {
     const user = await authService.findUserByEmail(req.body.email)
         if (!user) {
