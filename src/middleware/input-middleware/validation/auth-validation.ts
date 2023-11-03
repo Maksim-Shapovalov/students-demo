@@ -6,7 +6,7 @@ export const AuthValidation = ()=>(
     [
         body('login')
             .custom(async (i) => {
-                const findUser = await userRepository.findByEmailOrPassword(i)
+                const findUser = await userRepository.findByLoginOrEmail(i)
                 if (findUser){
                     throw new Error('Invalid login')
                 }
@@ -27,7 +27,7 @@ export const AuthValidation = ()=>(
             .withMessage('Invalid password'),
         body('email')
             .custom(async (i) => {
-                const findUser = await userRepository.findByEmailOrPassword(i)
+                const findUser = await userRepository.findByLoginOrEmail(i)
                 if (findUser){
                     throw new Error('Invalid email')
                 }
@@ -43,6 +43,10 @@ export const AuthValidation = ()=>(
 export const AuthValidationEmail = ()=>(
     [
             body('email')
+                .custom(async (i) => {
+                    const user = await userRepository.findByLoginOrEmail(i)
+                    if (user!.emailConfirmation.isConfirmed === true)throw new Error('user is registered')
+                })
                 .trim()
                 .isString()
                 .matches('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$')

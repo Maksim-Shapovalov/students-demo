@@ -61,10 +61,10 @@ export const userRepository = {
         const findUser = await dataUser.findOne({ $or: [{login: loginOrEmail}, {email: loginOrEmail}]})
         return findUser
     },
-    async findByEmailOrPassword(emailOrPassword: string){
-        const findUser = await dataUser.findOne({ $or: [{email: emailOrPassword}, {passwordHash: emailOrPassword}]})
-        return findUser
-    },
+    // async findByEmailOrPassword(emailOrPassword: string){
+    //     const findUser = await dataUser.findOne({ $or: [{email: emailOrPassword}, {passwordHash: emailOrPassword}]})
+    //     return findUser
+    // },
     async getNewUser(newUser: UserDbType): Promise<UserToCodeOutputModel>{
         const result = await dataUser.insertOne({...newUser})
         return UserToCodeMapper({...newUser, _id: result.insertedId})
