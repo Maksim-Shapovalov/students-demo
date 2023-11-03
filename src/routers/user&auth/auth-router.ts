@@ -31,7 +31,7 @@ authRouter.post("/registration-confirmation",
     res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
 })
 authRouter.post("/registration",
-    CheckingauthorizationvalidationCode(),
+    CheckingauthorizationvalidationCode,
     AuthValidation(),
     async (req: Request ,res:Response) => {
    const user = await serviceUser.getNewUser(req.body.login,req.body.password, req.body.email)
