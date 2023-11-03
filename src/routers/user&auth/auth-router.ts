@@ -3,7 +3,7 @@ import {serviceUser} from "../../service-rep/service-user";
 import {HTTP_STATUS} from "../../index";
 import {jwtService} from "../../application/jwt-service";
 import {userMapper} from "../../repository/user-repository";
-import {authMiddleware, CheckingauthorizationvalidationCode} from "../../middleware/auth-middleware";
+import {authMiddleware, CheckingAuthorizationValidationCode} from "../../middleware/auth-middleware";
 import {authService} from "../../domain/auth-service";
 import {AuthValidation, AuthValidationEmail} from "../../middleware/input-middleware/validation/auth-validation";
 
@@ -21,7 +21,7 @@ authRouter.post("/login", async (req: Request ,res:Response)=>{
 })
 
 authRouter.post("/registration-confirmation",
-    CheckingauthorizationvalidationCode,
+    CheckingAuthorizationValidationCode(),
     async (req: Request ,res:Response) => {
     const result = await authService.confirmatorUser(req.body.code)
         if (!result){
@@ -32,7 +32,6 @@ authRouter.post("/registration-confirmation",
 })
 authRouter.post("/registration",
     AuthValidation(),
-    CheckingauthorizationvalidationCode(),
     async (req: Request ,res:Response) => {
     const user = await serviceUser.getNewUser(req.body.login,req.body.password, req.body.email)
     await authService.doOperation(user)

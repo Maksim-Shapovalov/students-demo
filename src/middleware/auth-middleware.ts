@@ -28,13 +28,14 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
     res.sendStatus(HTTP_STATUS.UNAUTHORIZED_401)
 }
 
-export const CheckingauthorizationvalidationCode = () => ([
+export const CheckingAuthorizationValidationCode = () => ([
     body("code")
         .custom(async (value)=>{
             const codeUsers = await userRepository.findUsersbyCode(value)
             if (!codeUsers)throw new Error('user not found')
             if (codeUsers.emailConfirmation.isConfirmed)throw new Error('user not found')
             if (codeUsers.emailConfirmation.expirationDate < new Date().toISOString())throw new Error('user not found')
+            console.log(codeUsers, 'CheckingAuthorizationValidationCode')
             return true
         })
 ])

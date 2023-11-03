@@ -13,7 +13,7 @@ export const emailAdapter = {
                 pass: 'wewedrlwgkkmoswq'
             }
         });
-
+//createUser.email
         let info =
                 {
 
