@@ -5,13 +5,6 @@ import {HTTP_STATUS} from "../../../index";
 export const AuthValidation = ()=>(
     [
         body('login')
-            .custom(async (i) => {
-                const findUser = await userRepository.findByEmailOrPassword(i)
-                if (findUser){
-                    throw new Error('Invalid email')
-                }
-                return true
-            })
             .trim()
             .isString()
             .isLength({min:3,max:10})
@@ -32,6 +25,13 @@ export const AuthValidation = ()=>(
             .notEmpty()
             .withMessage('Invalid password'),
         body('email')
+            .custom(async (i) => {
+                const findUser = await userRepository.findByEmailOrPassword(i)
+                if (findUser){
+                    throw new Error('Invalid email')
+                }
+                return true
+            })
             .trim()
             .isString()
             .matches('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$')
