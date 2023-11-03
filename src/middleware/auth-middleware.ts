@@ -2,6 +2,7 @@ import {NextFunction, Request, Response} from "express";
 import {HTTP_STATUS} from "../index";
 import {jwtService} from "../application/jwt-service";
 import {userRepository} from "../repository/user-repository";
+import {body} from "express-validator";
 
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
     const registr = req.headers.authorization
@@ -26,3 +27,14 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
 
     res.sendStatus(HTTP_STATUS.UNAUTHORIZED_401)
 }
+
+export const CheckingauthorizationvalidationCode = () => ([
+    body("code")
+        .custom(async (value)=>{
+            const codeUsers = await userRepository.findUsersbyCode(value)
+            if (!codeUsers)throw new Error('user not found')
+            if (codeUsers.emailConfirmation.isConfirmed)throw new Error('user not found')
+            if (codeUsers.emailConfirmation.expirationDate < new Date().toISOString())throw new Error('user not found')
+            return true
+        })
+])

@@ -1,7 +1,14 @@
 import { PaginationType, UserPaginationQueryType} from "./qurey-repo/query-filter";
-import {dataPost, dataUser} from "../DB/data-base";
-import {UserDbType, UserOutputModel, UserToPostsDBModel, UserToPostsOutputModel} from "../types/user-type";
+import {dataBlog, dataUser} from "../DB/data-base";
+import {
+    UserDbType,
+    UserOutputModel,
+    UserToCodeOutputModel,
+    UserToPostsDBModel,
+    UserToPostsOutputModel
+} from "../types/user-type";
 import {ObjectId, WithId} from "mongodb";
+import {blogMapper} from "./blogs-repository";
 
 export const userRepository = {
     async getAllUsers(filter:UserPaginationQueryType): Promise<PaginationType<UserToPostsOutputModel> | null>{
@@ -32,15 +39,31 @@ export const userRepository = {
     },
     async getUserById(id:ObjectId){
         const findUser = await dataUser.findOne({_id: id})
+
         return findUser
+    },
+    async findUsersbyCode(codeUser:string){
+        const res = await dataUser.findOne({confirmationCode: codeUser})
+        console.log(res)
+        return res
+
+    },
+    async getUserByCode(codeUser:string): Promise<boolean>{
+       const res = await dataUser.updateOne({'emailConfirmation.confirmationCode': codeUser}, {
+            $set: {
+                'emailConfirmation.isConfirmed' : true
+            }
+        })
+        return res.matchedCount === 1
+
     },
     async findByLoginOrEmail(loginOrEmail: string){
         const findUser = await dataUser.findOne({ $or: [{login: loginOrEmail}, {email: loginOrEmail}]})
         return findUser
     },
-    async getNewUser(newUser: UserDbType): Promise<UserToPostsOutputModel>{
+    async getNewUser(newUser: UserDbType): Promise<UserToCodeOutputModel>{
         const result = await dataUser.insertOne({...newUser})
-        return userToPostMapper({...newUser, _id: result.insertedId})
+        return UserToCodeMapper({...newUser, _id: result.insertedId})
     },
     async deleteUserById(userId:string): Promise<boolean>{
         const findUser = await dataUser.deleteOne({_id:new ObjectId(userId)})
@@ -63,8 +86,15 @@ export const userToPostMapper = (user: WithId<UserToPostsDBModel>): UserToPostsO
         id: user._id.toHexString(),
         login: user.login,
         email: user.email,
-        // passwordHash: user.passwordHash,
-        // passwordSalt: user.passwordSalt,
         createdAt: user.createdAt
     }
+}
+export const UserToCodeMapper = (user: WithId<UserDbType>): UserToCodeOutputModel => {
+    return {
+        login: user.login,
+        email: user.email,
+        createdAt: user.createdAt,
+        emailConfirmation: user.emailConfirmation
+    }
+
 }

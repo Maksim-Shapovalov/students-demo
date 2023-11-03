@@ -18,6 +18,10 @@ userRouter.get("/",
     console.log(result)
     res.send(result)
 })
+userRouter.get("/:codeId", async (req: Request, res: Response)=>{
+    const result = await userRepository.getUserByCode(req.body.codeId)
+    res.send(result)
+})
 userRouter.post("/",
     authGuardMiddleware,
     UserValidation(),
@@ -27,6 +31,7 @@ userRouter.post("/",
         console.log(result)
     res.status(HTTP_STATUS.CREATED_201).send(result)
 })
+
 userRouter.delete("/:id",
     authGuardMiddleware,
     async (req: Request, res: Response)=> {
