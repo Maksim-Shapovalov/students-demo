@@ -43,7 +43,7 @@ export const userRepository = {
         return findUser
     },
     async findUsersbyCode(codeUser:string){
-        const res = await dataUser.findOne({confirmationCode: codeUser})
+        const res = await dataUser.findOne({'emailConfirmation.confirmationCode': codeUser})
         console.log(res)
         return res
 
