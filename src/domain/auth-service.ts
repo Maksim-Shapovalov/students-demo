@@ -9,8 +9,8 @@ export const authService = {
     async confirmatorUser(code:string){
         return await userRepository.getUserByCode(code)
     },
-    async findUserByEmail(userEmail:string){
-        return await userRepository.findByLoginOrEmail(userEmail)
+    async findUserByEmail(user:UserToCodeOutputModel){
+        await emailManager.sendEmailRecoveryMessage(user)
     },
     // async verificationTimeToMessage(user: UserToCodeOutputModel){
     //     if (user.emailConfirmation.expirationDate)

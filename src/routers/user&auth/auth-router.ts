@@ -45,13 +45,15 @@ authRouter.post("/registration-email-resending",
     AuthValidationEmail(),
     ErrorMiddleware,
     async (req: Request ,res:Response) => {
-    const user = await authService.findUserByEmail(req.body.email)
-        if (!user) {
+    const findUser =  await userRepository.findByLoginOrEmail(req.body.email)
+        if (!findUser) {
             res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
             return
         }
+    const user = await authService.findUserByEmail(findUser)
+
         console.log(user)
-        await authService.doOperation(user)
+        await authService.doOperation(findUser)
     res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
         //ToDo: create service to router
 })

@@ -28,7 +28,6 @@ userRouter.post("/",
     ErrorMiddleware,
     async (req: Request, res: Response)=> {
     const result = await serviceUser.getNewUser(req.body.login, req.body.password, req.body.email)
-        console.log(result)
     res.status(HTTP_STATUS.CREATED_201).send(result)
 })
 
