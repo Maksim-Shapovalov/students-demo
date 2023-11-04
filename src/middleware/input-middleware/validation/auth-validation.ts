@@ -1,6 +1,6 @@
 import {body} from "express-validator";
 import {userRepository} from "../../../repository/user-repository";
-import {HTTP_STATUS} from "../../../index";
+
 
 export const AuthValidation = ()=>(
     [
@@ -19,7 +19,6 @@ export const AuthValidation = ()=>(
             .notEmpty()
             .withMessage('Invalid login'),
         body('password')
-
             .trim()
             .isString()
             .isLength({min:6,max:20})

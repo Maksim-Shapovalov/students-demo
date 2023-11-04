@@ -37,7 +37,8 @@ authRouter.post("/registration",
     ErrorMiddleware,
     async (req: Request ,res:Response) => {
     const user = await serviceUser.getNewUser(req.body.login,req.body.password, req.body.email)
-    await authService.doOperation(user)
+        console.log(user)
+        await authService.doOperation(user)
     res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
 })
 authRouter.post("/registration-email-resending",
@@ -49,8 +50,9 @@ authRouter.post("/registration-email-resending",
             res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
             return
         }
+        console.log(user)
         await authService.doOperation(user)
-    res.send(HTTP_STATUS.NO_CONTENT_204)
+    res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
         //ToDo: create service to router
 })
 authRouter.get("/me",
