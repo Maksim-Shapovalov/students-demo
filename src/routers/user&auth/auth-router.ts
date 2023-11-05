@@ -2,11 +2,12 @@ import {Request, Response, Router} from "express";
 import {serviceUser} from "../../service-rep/service-user";
 import {HTTP_STATUS} from "../../index";
 import {jwtService} from "../../application/jwt-service";
-import {userMapper, userRepository} from "../../repository/user-repository";
+import {userMapper, userRepository, UserToCodeMapper} from "../../repository/user-repository";
 import {authMiddleware, CheckingAuthorizationValidationCode} from "../../middleware/auth-middleware";
 import {authService} from "../../domain/auth-service";
 import {AuthValidation, AuthValidationEmail} from "../../middleware/input-middleware/validation/auth-validation";
 import {ErrorMiddleware} from "../../middleware/error-middleware";
+import {UserToCodeOutputModel} from "../../types/user-type";
 
 export const authRouter = Router()
 
@@ -45,7 +46,7 @@ authRouter.post("/registration-email-resending",
     AuthValidationEmail(),
     ErrorMiddleware,
     async (req: Request ,res:Response) => {
-    const findUser =  await userRepository.findByLoginOrEmail(req.body.email)
+    const findUser =  await userRepository.findByLoginOrEmailtoUsers(req.body.email)
         if (!findUser) {
             res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
             return

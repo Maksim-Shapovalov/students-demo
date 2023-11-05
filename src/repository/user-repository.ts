@@ -60,6 +60,11 @@ export const userRepository = {
     async findByLoginOrEmail(loginOrEmail: string){
         const findUser = await dataUser.findOne({ $or: [{login: loginOrEmail}, {email: loginOrEmail}]})
         return findUser
+
+    },
+    async findByLoginOrEmailtoUsers(loginOrEmail: string): Promise<UserToCodeOutputModel | null> {
+        const findUser = await dataUser.findOne({$or: [{login: loginOrEmail}, {email: loginOrEmail}]})
+        return findUser
     },
     // async findByEmailOrPassword(emailOrPassword: string){
     //     const findUser = await dataUser.findOne({ $or: [{email: emailOrPassword}, {passwordHash: emailOrPassword}]})
