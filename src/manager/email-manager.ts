@@ -9,6 +9,13 @@ export const emailManager = {
         </p>`
         await emailAdapter.sendEmail(createUser, textForSend)
     },
+    async repeatSendEmailRecoveryMessage(createUser: any){
+        const textForSend = `<h1>Resend a message</h1>
+        <p>To finish registration please follow the link below:
+        <a href='https://somesite.com/confirm-email?code=${createUser.emailConfirmation.confirmationCode}'>complete registration</a>
+        </p>`
+        await emailAdapter.sendEmail(createUser, textForSend)
+    },
 
 
 }
