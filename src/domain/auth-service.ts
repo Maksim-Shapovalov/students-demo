@@ -3,7 +3,7 @@ import {userRepository} from "../repository/user-repository";
 import {UserToCodeOutputModel} from "../types/user-type";
 
 export const authService = {
-    async doOperation(user: UserToCodeOutputModel){
+    async doOperation(user: any){
        await emailManager.sendEmailRecoveryMessage(user)
     },
     async confirmatorUser(code:string){

@@ -22,7 +22,6 @@ export const emailAdapter = {
             subject: createUser.login,
             html: message
         }
-        console.log('info',info)
 
             const result = await transporter.sendMail(info)
             // const timeToStart = new Date()
