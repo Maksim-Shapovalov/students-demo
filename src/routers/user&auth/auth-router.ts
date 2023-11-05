@@ -7,11 +7,14 @@ import {authMiddleware, CheckingAuthorizationValidationCode} from "../../middlew
 import {authService} from "../../domain/auth-service";
 import {AuthValidation, AuthValidationEmail} from "../../middleware/input-middleware/validation/auth-validation";
 import {ErrorMiddleware} from "../../middleware/error-middleware";
+import {authGuardMiddleware} from "../../middleware/register-middleware";
 
 export const authRouter = Router()
 
 
-authRouter.post("/login", async (req: Request ,res:Response)=>{
+authRouter.post("/login",
+    authGuardMiddleware,
+    async (req: Request ,res:Response)=>{
     const user = await serviceUser.checkCredentials(req.body.loginOrEmail, req.body.password)
     if (!user){
         res.sendStatus(HTTP_STATUS.UNAUTHORIZED_401)
@@ -37,7 +40,6 @@ authRouter.post("/registration",
     ErrorMiddleware,
     async (req: Request ,res:Response) => {
     const user = await serviceUser.getNewUser(req.body.login,req.body.password, req.body.email)
-        console.log(user)
         await authService.doOperation(user)
     res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
 })
@@ -46,13 +48,14 @@ authRouter.post("/registration-email-resending",
     ErrorMiddleware,
     async (req: Request ,res:Response) => {
     const findUser =  await userRepository.findByLoginOrEmail(req.body.email)
+        console.log(findUser, ' this is function by found users')
         if (!findUser) {
             res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
             return
         }
-    const user = await authService.findUserByEmail(findUser)
+    const user = await authService.findUserByEmail(findUser.email)
 
-        console.log(user)
+        console.log('---------------',user)
         await authService.doOperation(findUser)
     res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
         //ToDo: create service to router
