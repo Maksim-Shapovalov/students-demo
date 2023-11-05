@@ -53,9 +53,6 @@ authRouter.post("/registration-email-resending",
             res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
             return
         }
-    const user = await authService.findUserByEmail(findUser)
-
-        console.log('---------------',user)
         await authService.doOperation(findUser)
     res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
         //ToDo: create service to router
