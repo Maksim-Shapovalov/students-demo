@@ -65,7 +65,7 @@ export const userRepository = {
     },
 
     async updateCodeToResendingMessage(userEmail: string, info: any){
-         const result = await dataUser.updateOne({email : userEmail}, {
+        await dataUser.updateOne({email : userEmail}, {
             $set:{
                 'emailConfirmation.confirmationCode': info.confirmationCode,
                 'emailConfirmation.expirationDate': add(new Date(), {
