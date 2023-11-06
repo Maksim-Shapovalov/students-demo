@@ -74,8 +74,9 @@ export const userRepository = {
                 }).toISOString()
             }
         })
+        const user = dataUser.findOne({email:userEmail})
         console.log(result)
-        return true
+        return user
     },
     async getNewUser(newUser: UserDbType): Promise<UserToCodeOutputModel>{
         const result = await dataUser.insertOne({...newUser})
