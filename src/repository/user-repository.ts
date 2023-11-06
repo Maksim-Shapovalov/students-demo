@@ -74,7 +74,8 @@ export const userRepository = {
                 }).toISOString()
             }
         })
-        return result
+        console.log(result)
+        return true
     },
     async getNewUser(newUser: UserDbType): Promise<UserToCodeOutputModel>{
         const result = await dataUser.insertOne({...newUser})
