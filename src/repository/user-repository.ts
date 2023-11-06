@@ -74,8 +74,8 @@ export const userRepository = {
                 }).toISOString()
             }
         })
-        const user = dataUser.findOne({email:userEmail})
-        console.log(result)
+        const user = await dataUser.findOne({email:userEmail})
+        console.log('result',user)
         return user
     },
     async getNewUser(newUser: UserDbType): Promise<UserToCodeOutputModel>{
