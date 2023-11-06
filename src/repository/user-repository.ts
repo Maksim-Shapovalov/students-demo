@@ -9,6 +9,7 @@ import {
 } from "../types/user-type";
 import {ObjectId, WithId} from "mongodb";
 import {blogMapper} from "./blogs-repository";
+import add from "date-fns/add";
 
 export const userRepository = {
     async getAllUsers(filter:UserPaginationQueryType): Promise<PaginationType<UserToPostsOutputModel> | null>{
@@ -62,14 +63,19 @@ export const userRepository = {
         return findUser
 
     },
-    async findByLoginOrEmailtoUsers(loginOrEmail: string): Promise<UserToCodeOutputModel | null> {
-        const findUser = await dataUser.findOne({$or: [{login: loginOrEmail}, {email: loginOrEmail}]})
-        return findUser
+
+    async updateCodeToResendingMessage(userId: string, info: any){
+         await dataUser.updateOne({_id : new ObjectId(userId)}, {
+            $set:{
+                'emailConfirmation.confirmationCode': info.confirmationCode,
+                'emailConfirmation.expirationDate': add(new Date(), {
+                    hours: 1,
+                    minutes: 3
+                }).toISOString()
+            }
+        })
+        return true
     },
-    // async findByEmailOrPassword(emailOrPassword: string){
-    //     const findUser = await dataUser.findOne({ $or: [{email: emailOrPassword}, {passwordHash: emailOrPassword}]})
-    //     return findUser
-    // },
     async getNewUser(newUser: UserDbType): Promise<UserToCodeOutputModel>{
         const result = await dataUser.insertOne({...newUser})
         return UserToCodeMapper({...newUser, _id: result.insertedId})

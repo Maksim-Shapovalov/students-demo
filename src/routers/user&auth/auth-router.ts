@@ -46,7 +46,7 @@ authRouter.post("/registration-email-resending",
     AuthValidationEmail(),
     ErrorMiddleware,
     async (req: Request ,res:Response) => {
-    const findUser =  await userRepository.findByLoginOrEmailtoUsers(req.body.email)
+    const findUser =  await userRepository.findByLoginOrEmail(req.body.email)
         if (!findUser) {
             res.sendStatus(HTTP_STATUS.BAD_REQUEST_400)
             return

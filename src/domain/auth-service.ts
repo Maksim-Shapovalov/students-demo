@@ -1,8 +1,8 @@
 import {emailManager} from "../manager/email-manager";
 import {userRepository} from "../repository/user-repository";
-import {UserToCodeOutputModel} from "../types/user-type";
-import {UUID} from "mongodb";
 import {v4 as uuidv4} from "uuid";
+import add from "date-fns/add";
+import now = jest.now;
 
 export const authService = {
     async doOperation(user: any){
@@ -12,8 +12,11 @@ export const authService = {
         return await userRepository.getUserByCode(code)
     },
     async findUserByEmail(user:any){
-        // const updateInfo =
-        emailManager.repeatSendEmailRecoveryMessage(user)
+        const newConfirmationCode = {
+            confirmationCode: uuidv4(),
+        }
+        await userRepository.updateCodeToResendingMessage(user._id, newConfirmationCode)
+        await emailManager.repeatSendEmailRecoveryMessage(user.email, user.login, user.emailConfirmation.confirmationCode)//email, code
     },
     // async verificationTimeToMessage(user: UserToCodeOutputModel){
     //     if (user.emailConfirmation.expirationDate)

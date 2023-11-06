@@ -31,7 +31,7 @@ export const emailAdapter = {
         console.log('error',e)
     }
     },
-    async resendEmail(createUser:any, message:string) {
+    async resendEmail(userEmail:string, userLogin:string , message:string) {
         try{
 
             const transporter = nodemailer.createTransport({
@@ -46,8 +46,8 @@ export const emailAdapter = {
                 {
 
                     from: 'Maksim <maksim.shapovalov.01@gmail.com>',
-                    to: createUser.email,
-                    subject: createUser.login,
+                    to: userEmail,
+                    subject: userLogin,
                     html: message
                 }
 
