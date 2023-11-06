@@ -15,7 +15,7 @@ export const authService = {
         const newConfirmationCode = {
             confirmationCode: uuidv4(),
         }
-        await userRepository.updateCodeToResendingMessage(user._id, newConfirmationCode)
+        await userRepository.updateCodeToResendingMessage(user.email, newConfirmationCode)
         await emailManager.repeatSendEmailRecoveryMessage(user.email, user.login, user.emailConfirmation.confirmationCode)//email, code
     },
     // async verificationTimeToMessage(user: UserToCodeOutputModel){
