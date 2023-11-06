@@ -14,7 +14,7 @@ export const emailManager = {
         <p>To finish registration please follow the link below:
         <a href='https://somesite.com/confirm-email?code=${createUser.emailConfirmation.confirmationCode}'>complete registration</a>
         </p>`
-        await emailAdapter.sendEmail(createUser, textForSend)
+        await emailAdapter.resendEmail(createUser, textForSend)
     },
 
 

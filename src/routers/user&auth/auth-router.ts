@@ -19,7 +19,7 @@ authRouter.post("/login", async (req: Request ,res:Response)=>{
         return
     }
     const token = await jwtService.createdJWT(userMapper(user))
-    res.status(HTTP_STATUS.OK_200).send({accessToken:token})
+   return res.status(HTTP_STATUS.OK_200).send({accessToken:token})
 })
 
 authRouter.post("/registration-confirmation",
@@ -48,12 +48,12 @@ authRouter.post("/registration-email-resending",
     async (req: Request ,res:Response) => {
     const findUser =  await userRepository.findByLoginOrEmailtoUsers(req.body.email)
         if (!findUser) {
-            res.sendStatus(HTTP_STATUS.NOT_FOUND_404)
+            res.sendStatus(HTTP_STATUS.BAD_REQUEST_400)
             return
         }
         console.log( 'resending user',findUser)
         await authService.findUserByEmail(findUser)
-    res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
+   return res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
         //ToDo: create service to router
 })
 authRouter.get("/me",
