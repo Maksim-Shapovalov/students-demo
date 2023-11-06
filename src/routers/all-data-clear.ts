@@ -5,10 +5,11 @@ import {dataBlog, dataComments, dataPost, dataUser} from "../DB/data-base";
 
 export const AllDataClear = Router();
 
-AllDataClear.delete('/', (req:Request, res: Response) => {
-    dataPost.deleteMany({})
-    dataBlog.deleteMany({})
-    dataUser.deleteMany({})
-    dataComments.deleteMany({})
-    res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
+AllDataClear.delete('/', async(req:Request, res: Response) => {
+   await Promise.all([
+       dataPost.deleteMany({}),
+       dataBlog.deleteMany({}),
+       dataUser.deleteMany({}),
+       dataComments.deleteMany({})])
+   return res.sendStatus(HTTP_STATUS.NO_CONTENT_204)
 })
