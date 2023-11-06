@@ -65,7 +65,7 @@ export const userRepository = {
     },
 
     async updateCodeToResendingMessage(userId: string, info: any){
-         await dataUser.updateOne({_id : new ObjectId(userId)}, {
+         const result = await dataUser.updateOne({_id : new ObjectId(userId)}, {
             $set:{
                 'emailConfirmation.confirmationCode': info.confirmationCode,
                 'emailConfirmation.expirationDate': add(new Date(), {
@@ -74,7 +74,7 @@ export const userRepository = {
                 }).toISOString()
             }
         })
-        return true
+        return result
     },
     async getNewUser(newUser: UserDbType): Promise<UserToCodeOutputModel>{
         const result = await dataUser.insertOne({...newUser})
